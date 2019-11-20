@@ -29,6 +29,6 @@ setup(
     package_data={"attribution": ["py.typed"]},
     python_requires=">=3.6",
     setup_requires=["setuptools>=38.6.0"],
-    install_requires=["click"],
+    install_requires=["click", "packaging"],
     entry_points={"console_scripts": ["attribution = attribution.main:main"]},
 )
