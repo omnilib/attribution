@@ -1,7 +1,7 @@
 attribution
 ===========
 
-Implementation of itertools, builtins, and more for AsyncIO and mixed-type iterables.
+Generate Markdown formatted changelogs based on commit tags and shortlogs.
 
 [![build status](https://github.com/jreese/attribution/workflows/Build/badge.svg)](https://github.com/jreese/attribution/actions)
 [![code coverage](https://img.shields.io/codecov/c/gh/jreese/attribution)](https://codecov.io/gh/jreese/attribution)
@@ -22,7 +22,7 @@ You can install it from PyPI:
 Usage
 -----
 
-
+TBD
 
 License
 -------
