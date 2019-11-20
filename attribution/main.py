@@ -3,7 +3,7 @@
 
 import click
 
-from attribution import __version__, __author__
+from attribution import __author__, __version__
 
 
 @click.command(name="attribution", help="generate changelogs from tags and shortlog")
