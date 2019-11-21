@@ -1,12 +1,9 @@
 # Copyright 2019 John Reese
 # Licensed under the MIT license
 
-import subprocess
 from unittest import TestCase
-from unittest.mock import patch, call
 
-from .. import generate as gen
-from ..types import Tag, Version, InvalidVersion
+from ..types import Tag, Version
 
 
 class TypesTest(TestCase):
@@ -25,7 +22,6 @@ class TypesTest(TestCase):
         tag1 = Tag("v1.0", Version("1.0"))
         tag2 = Tag("v1.1", Version("1.1"))
         tag3 = Tag("v1.2", Version("1.2"))
-        not_tag = 24
 
         self.assertLess(tag1, tag2)
         self.assertLess(tag1, tag3)
@@ -35,6 +31,7 @@ class TypesTest(TestCase):
         self.assertGreater(tag2, tag1)
 
     def test_tag_order_other(self):
+        # pylint: disable=pointless-statement, misplaced-comparison-constant
         tag = Tag("1.0", Version("1.0"))
         with self.assertRaises(TypeError):
             tag < 24
@@ -59,4 +56,3 @@ class TypesTest(TestCase):
 
         with self.assertRaises(TypeError):
             24 >= tag
-

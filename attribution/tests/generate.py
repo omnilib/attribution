@@ -3,12 +3,12 @@
 
 import subprocess
 from unittest import TestCase
-from unittest.mock import patch, call
+from unittest.mock import call, patch
 
 from attr import evolve
 
 from .. import generate as gen
-from ..types import Tag, Version, InvalidVersion
+from ..types import Tag, Version
 
 
 class GenerateTest(TestCase):
@@ -126,5 +126,3 @@ class GenerateTest(TestCase):
         tags_mock.assert_called_with()
         tpl_mock.render.assert_called_with(project="fake name", tags=tags, len=len)
         click_mock.echo.assert_called_with(output)
-
-

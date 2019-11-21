@@ -1,8 +1,8 @@
 # Copyright 2019 John Reese
 # Licensed under the MIT license
 
-import re
 import logging
+import re
 import shlex
 import subprocess
 from typing import List, Match
@@ -10,7 +10,7 @@ from typing import List, Match
 import click
 from jinja2 import Template
 
-from .types import Tag, Version, InvalidVersion
+from .types import InvalidVersion, Tag, Version
 
 LOG = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ PGP_MSG_RE = re.compile(
 )
 
 TEMPLATE = Template(
-"""
+    """
 {{- project }}
 {{ "=" * len(project) }}
 {% for tag in tags %}

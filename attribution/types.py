@@ -4,7 +4,7 @@
 from typing import Optional
 
 from attr import dataclass
-from packaging.version import Version, InvalidVersion
+from packaging.version import InvalidVersion, Version
 
 __all__ = [
     "Tag",
