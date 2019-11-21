@@ -11,6 +11,7 @@ dev:
 
 setup:
 	python -m pip install -Ur requirements-dev.txt
+	python -m pip install -Ur requirements.txt
 
 release: lint test clean
 	python setup.py sdist bdist_wheel
