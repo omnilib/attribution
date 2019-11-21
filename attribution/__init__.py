@@ -6,4 +6,4 @@ Changelog generation from tags and shortlogs
 """
 
 __author__ = "John Reese"
-__version__ = "1.0"
+__version__ = "1.1"

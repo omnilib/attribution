@@ -1,6 +1,19 @@
 attribution
 ===========
 
+v1.1
+----
+
+Bugfix release
+
+- Fix install_requires to correctly list attrs and jinja2
+
+```
+$ git shortlog -s v1.0...v1.1
+     4	John Reese
+```
+
+
 v1.0
 ----
 
