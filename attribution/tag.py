@@ -105,5 +105,23 @@ class Tag:
 
         return tags
 
+    @classmethod
+    def create(cls, version: Version, message: str, *, signed: bool = False) -> "Tag":
+        """Create a new tag with the given message"""
+        name = f"v{version}"
+        flag = "--sign" if signed else "--annotate"
+        sh("git", "tag", flag, name, "-m", message)
+
+        return Tag(name=name, version=version)
+
+    def update(self, message: Optional[str] = None, *, signed: bool = False) -> None:
+        """Update an existing tag, reusing the existing message if not given"""
+        if message is None:
+            message = self.message
+        else:
+            self._message = None
+        flag = "--sign" if signed else "--annotate"
+        sh("git", "tag", "--force", flag, self.name, "-m", message)
+
 
 Tags = List[Tag]

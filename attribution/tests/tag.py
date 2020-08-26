@@ -166,3 +166,37 @@ class TagTest(TestCase):
         sh_mock.assert_called_with("git tag")
         log_mock.warning.assert_called_with("Skipping tag feature-branch")
         self.assertEqual(result, expected)
+
+    @patch("attribution.tag.sh")
+    def test_create(self, sh_mock):
+        sh_mock.return_value = ""
+        expected = Tag("v1.1", Version("1.1"))
+        result = Tag.create(Version("1.1"), "Does more stuff")
+        sh_mock.assert_called_with(
+            "git", "tag", "--annotate", "v1.1", "-m", "Does more stuff"
+        )
+        self.assertEqual(result, expected)
+
+        result = Tag.create(Version("1.1"), "Does more stuff", signed=True)
+        sh_mock.assert_called_with(
+            "git", "tag", "--sign", "v1.1", "-m", "Does more stuff"
+        )
+        self.assertEqual(result, expected)
+
+    @patch("attribution.tag.sh")
+    def test_update(self, sh_mock):
+        sh_mock.return_value = ""
+        tag = Tag("v1.1", Version("1.1"))
+        tag._message = "Now with more stuff"
+
+        tag.update()
+        sh_mock.assert_called_with(
+            "git", "tag", "--force", "--annotate", "v1.1", "-m", "Now with more stuff"
+        )
+        self.assertEqual(tag._message, "Now with more stuff")
+
+        tag.update(message="Now with even more stuff!", signed=True)
+        sh_mock.assert_called_with(
+            "git", "tag", "--force", "--sign", "v1.1", "-m", "Now with even more stuff!"
+        )
+        self.assertIsNone(tag._message)
