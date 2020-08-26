@@ -5,5 +5,6 @@
 Changelog generation from tags and shortlogs
 """
 
+from .__version__ import __version__
+
 __author__ = "John Reese"
-__version__ = "1.1"
