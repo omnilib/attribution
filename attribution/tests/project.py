@@ -7,6 +7,7 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import patch
 
+from ..tag import Tag, Version
 from ..project import Project
 
 
@@ -24,6 +25,24 @@ class ProjectTest(TestCase):
         self.assertEqual(p1, p3)
 
         self.assertNotEqual(p1, not_project)
+
+    @patch("attribution.project.Tag")
+    def test_tags(self, tag_mock):
+        fake_tags = [
+            Tag(name="v1.0", version=Version("1.0")),
+            Tag(name="v1.1", version=Version("1.1")),
+        ]
+        tag_mock.all_tags.return_value = fake_tags
+
+        project = Project(name="foo", config={})
+        result = project.tags
+        tag_mock.all_tags.assert_called_once()
+        self.assertEqual(result, fake_tags)
+
+        tag_mock.all_tags.reset_mock()
+        result = project.tags
+        tag_mock.all_tags.assert_not_called()
+        self.assertEqual(result, fake_tags)
 
     @patch("attribution.project.LOG")
     @patch("attribution.project.sh")

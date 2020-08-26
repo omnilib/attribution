@@ -30,7 +30,7 @@ class Project:
     @property
     def tags(self) -> Tags:
         if not self._tags:
-            pass
+            self._tags = Tag.all_tags()
 
         return self._tags
 
