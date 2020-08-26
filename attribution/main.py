@@ -14,12 +14,17 @@ from .project import Project
 from .tag import Tag
 
 
-@click.command(name="attribution", help="generate changelogs from tags and shortlog")
+@click.group()
 @click.version_option(__version__, "-V", "--version", prog_name="attribution")
 @click.option("-d", "--debug", is_flag=True, help="enable debug logging")
 def main(debug: bool = False) -> None:
+    """Generate changelogs from tags and shortlog"""
     logging.basicConfig(level=logging.DEBUG if debug else logging.WARNING)
 
+
+@main.command("generate")
+def generate() -> None:
+    """Regenerate changelog from existing tags"""
     name = Path(os.getcwd()).name
 
     project = Project(name)
@@ -28,5 +33,10 @@ def main(debug: bool = False) -> None:
     Contributers(project).generate(tags)
 
 
+@main.command("tag")
+def tag() -> None:
+    """Create new tagged version with changelog"""
+
+
 if __name__ == "__main__":
-    main()
+    main(prog_name="attribution")  # pylint: disable=unexpected-keyword-arg

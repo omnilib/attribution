@@ -8,6 +8,7 @@ from typing import Any, Optional
 from attr import dataclass
 
 from .helpers import sh
+from .tag import Tag, Tags
 
 LOG = logging.getLogger(__name__)
 
@@ -16,11 +17,19 @@ LOG = logging.getLogger(__name__)
 class Project:
     name: str
     _shortlog: Optional[str] = None
+    _tags: Tags = []
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Project):
             return self.name == other.name
         return False
+
+    @property
+    def tags(self) -> Tags:
+        if not self._tags:
+            pass
+
+        return self._tags
 
     @property
     def shortlog_cmd(self) -> str:
