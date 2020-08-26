@@ -2,3 +2,4 @@ attrs
 click
 jinja2
 packaging
+toml

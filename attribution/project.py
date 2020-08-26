@@ -3,8 +3,10 @@
 
 import logging
 import subprocess
-from typing import Any, Optional
+from pathlib import Path
+from typing import Any, Dict, Optional
 
+import toml
 from attr import dataclass
 
 from .helpers import sh
@@ -16,6 +18,7 @@ LOG = logging.getLogger(__name__)
 @dataclass(eq=False)
 class Project:
     name: str
+    config: Dict[str, Any] = {}
     _shortlog: Optional[str] = None
     _tags: Tags = []
 
@@ -48,3 +51,24 @@ class Project:
                 self._shortlog = ""
 
         return self._shortlog
+
+    @classmethod
+    def load(cls, path: Optional[Path] = None) -> "Project":
+        if path is None:
+            path = Path.cwd()
+
+        name = ""
+        config: Dict[str, Any] = {}
+
+        pyproject_path = path / "pyproject.toml"
+        if pyproject_path.is_file():
+            pyproject = toml.loads(pyproject_path.read_text())
+
+            if "tool" in pyproject and "attribution" in pyproject["tool"]:
+                config = pyproject["tool"]["attribution"]
+                name = config.get("name", "")
+
+        if not name:
+            name = path.name
+
+        return Project(name=name, config=config)

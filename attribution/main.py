@@ -25,9 +25,7 @@ def main(debug: bool = False) -> None:
 @main.command("generate")
 def generate() -> None:
     """Regenerate changelog from existing tags"""
-    name = Path(os.getcwd()).name
-
-    project = Project(name)
+    project = Project.load()
     tags = Tag.all_tags()
     Changelog(project).generate(tags)
     Contributers(project).generate(tags)

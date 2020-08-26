@@ -2,6 +2,8 @@
 # Licensed under the MIT license
 
 import subprocess
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -48,3 +50,44 @@ class ProjectTest(TestCase):
         sh_mock.assert_called_with(project.shortlog_cmd)
         log_mock.exception.assert_called_once()
         self.assertEqual(result, "")
+
+    @patch("attribution.project.Path.cwd")
+    def test_load(self, cwd_mock):
+        fake_pyproject = """
+[tool.attribution]
+name = "fizzbuzz"
+        """
+
+        with TemporaryDirectory() as td:
+            td = Path(td)
+            pyproject = td / "pyproject.toml"
+            pyproject.write_text(fake_pyproject.strip())
+            cwd_mock.return_value = td
+
+            with self.subTest("pyproject in cwd"):
+                project = Project.load()
+                cwd_mock.assert_called_once()
+                self.assertEqual(project.name, "fizzbuzz")
+                self.assertEqual(project.config, {"name": "fizzbuzz"})
+                cwd_mock.reset_mock()
+
+            with self.subTest("pyproject in given path"):
+                project = Project.load(td)
+                cwd_mock.assert_not_called()
+                self.assertEqual(project.name, "fizzbuzz")
+                self.assertEqual(project.config, {"name": "fizzbuzz"})
+
+            with self.subTest("empty pyproject"):
+                pyproject.write_text("\n")
+                project = Project.load(td)
+                cwd_mock.assert_not_called()
+                self.assertEqual(project.name, td.name)
+                self.assertEqual(project.config, {})
+
+            with self.subTest("no pyproject"):
+                pyproject.unlink()
+                project = Project.load(td)
+                cwd_mock.assert_not_called()
+                self.assertEqual(project.name, td.name)
+                self.assertEqual(project.config, {})
+
