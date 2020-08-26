@@ -7,8 +7,8 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import patch
 
-from ..tag import Tag, Version
 from ..project import Project
+from ..tag import Tag, Version
 
 
 class ProjectTest(TestCase):
@@ -109,4 +109,3 @@ name = "fizzbuzz"
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
                 self.assertEqual(project.config, {})
-

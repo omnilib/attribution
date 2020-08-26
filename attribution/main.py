@@ -2,8 +2,6 @@
 # Licensed under the MIT license
 
 import logging
-import os
-from pathlib import Path
 
 import click
 
