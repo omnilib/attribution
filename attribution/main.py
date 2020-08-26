@@ -7,9 +7,8 @@ import click
 
 from attribution import __author__, __version__
 
-from .generate import Changelog, Contributers
+from .generate import Changelog
 from .project import Project
-from .tag import Tag
 
 
 @click.group()
@@ -24,9 +23,7 @@ def main(debug: bool = False) -> None:
 def generate() -> None:
     """Regenerate changelog from existing tags"""
     project = Project.load()
-    tags = Tag.all_tags()
-    Changelog(project).generate(tags)
-    Contributers(project).generate(tags)
+    Changelog(project).generate()
 
 
 @main.command("tag")
