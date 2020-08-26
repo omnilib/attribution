@@ -3,7 +3,6 @@
 
 import textwrap
 
-import click
 from jinja2 import Template
 
 from .project import Project
@@ -16,11 +15,11 @@ class GeneratedFile:
     def __init__(self, project: Project):
         self.project = project
 
-    def generate(self) -> None:
+    def generate(self) -> str:
         tags = self.project.tags
         template = Template(textwrap.dedent(self.TEMPLATE))
         output = template.render(project=self.project, tags=tags, len=len)
-        click.echo(output)
+        return output
 
 
 class Changelog(GeneratedFile):
