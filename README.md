@@ -6,7 +6,7 @@ Generate Markdown formatted changelogs based on commit tags and shortlogs.
 [![build status](https://github.com/jreese/attribution/workflows/Build/badge.svg)](https://github.com/jreese/attribution/actions)
 [![code coverage](https://img.shields.io/codecov/c/gh/jreese/attribution)](https://codecov.io/gh/jreese/attribution)
 [![version](https://img.shields.io/pypi/v/attribution.svg)](https://pypi.org/project/attribution)
-[![license](https://img.shields.io/pypi/l/attribution.svg)](https://github.com/jreese/attribution/blob/master/LICENSE)
+[![license](https://img.shields.io/pypi/l/attribution.svg)](https://github.com/jreese/attribution/blob/main/LICENSE)
 [![code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 
