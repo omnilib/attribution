@@ -3,7 +3,7 @@ from setuptools import setup
 with open("README.md", encoding="utf8") as f:
     readme = f.read()
 
-with open("attribution/__init__.py", encoding="utf8") as f:
+with open("attribution/__version__.py", encoding="utf8") as f:
     for line in f:
         if line.startswith("__version__"):
             version = line.split('"')[1]
