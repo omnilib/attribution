@@ -79,7 +79,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
         changelog_file = Path("CHANGELOG.md")
         changelog_file.write_text(changelog)
         sh(f"git add {changelog_file}")
-        sh(f"git commit --amend --no-edit")
+        sh("git commit --amend --no-edit")
         tag.update(message=message, signed=True)
 
     except Exception:

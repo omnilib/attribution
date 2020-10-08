@@ -37,3 +37,6 @@ html:
 
 clean:
 	rm -rf build dist html README MANIFEST *.egg-info
+
+distclean: clean
+	rm -rf .venv
