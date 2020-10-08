@@ -31,5 +31,9 @@ test:
 	python -m coverage report
 	python -m mypy attribution
 
+.PHONY: html
+html:
+	sphinx-build -b html docs html
+
 clean:
-	rm -rf build dist README MANIFEST *.egg-info
+	rm -rf build dist html README MANIFEST *.egg-info
