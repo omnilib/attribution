@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open("README.md", encoding="utf8") as f:
+with open("README.rst", encoding="utf8") as f:
     readme = f.read()
 
 with open("attribution/__version__.py", encoding="utf8") as f:
@@ -12,7 +12,7 @@ setup(
     name="attribution",
     description="generate changelogs based on tag messages and shortlog",
     long_description=readme,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     version=version,
     author="John Reese",
     author_email="john@noswap.com",
