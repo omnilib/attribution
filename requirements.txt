@@ -1,5 +1,5 @@
 attrs
 click
 jinja2
-packaging
+packaging==20.4
 toml
