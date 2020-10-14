@@ -1,3 +1,5 @@
+SRCS:=attribution setup.py
+
 venv:
 	python -m venv .venv
 	source .venv/bin/activate && make setup dev
@@ -18,13 +20,13 @@ release: lint test clean
 	python -m twine upload dist/*
 
 format:
-	python -m isort --apply --recursive attribution setup.py
+	python -m usort format $(SRCS)
 	python -m black attribution setup.py
 
 lint:
-	python -m pylint --rcfile .pylint attribution setup.py
-	python -m isort --diff --recursive attribution setup.py
-	python -m black --check attribution setup.py
+	python -m pylint --rcfile .pylint $(SRCS)
+	python -m usort check $(SRCS)
+	python -m black --check $(SRCS)
 
 test:
 	python -m coverage run -m attribution.tests

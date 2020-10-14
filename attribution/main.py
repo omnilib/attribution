@@ -8,7 +8,6 @@ from typing import Optional
 import click
 
 from attribution import __author__, __version__
-
 from .generate import Changelog
 from .helpers import sh
 from .project import Project

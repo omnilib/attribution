@@ -1,5 +1,5 @@
 attrs==20.2.0
-click
+click==7.1.2
 jinja2==2.11.2
-packaging
+packaging==20.4
 toml==0.10.1
