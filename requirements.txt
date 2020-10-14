@@ -1,4 +1,4 @@
-attrs
+attrs==20.2.0
 click
 jinja2
 packaging
