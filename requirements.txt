@@ -1,5 +1,5 @@
 attrs==20.2.0
 click
-jinja2
+jinja2==2.11.2
 packaging
 toml
