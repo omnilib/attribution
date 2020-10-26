@@ -69,10 +69,13 @@ def tag_release(version: Version, message: Optional[str]) -> None:
     try:
         # XXX: This is a really hacky wall of commands
         project = Project.load()
-        version_file = Path(project.name) / "__version__.py"
-        version_file.write_text(f'__version__ = "{version}"\n')
-        sh(f"git add {version_file}")
-        sh(f"git commit -m 'Version bump v{version}'")
+
+        if project.config.get("version_file", True):
+            version_file = Path(project.name) / "__version__.py"
+            version_file.write_text(f'__version__ = "{version}"\n')
+            sh(f"git add {version_file}")
+            sh(f"git commit -m 'Version bump v{version}'")
+
         tag = Tag.create(version, message=message)
         changelog = Changelog(project).generate()
         changelog_file = Path("CHANGELOG.md")
