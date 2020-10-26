@@ -70,7 +70,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
         # XXX: This is a really hacky wall of commands
         project = Project.load()
 
-        if project.config.get("version_file", True):
+        if project.config.get("version_file"):
             version_file = Path(project.name) / "__version__.py"
             version_file.write_text(f'__version__ = "{version}"\n')
             sh(f"git add {version_file}")
