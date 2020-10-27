@@ -74,8 +74,8 @@ def tag_release(version: Version, message: Optional[str]) -> None:
             version_file = Path(project.name) / "__version__.py"
             version_file.write_text(f'__version__ = "{version}"\n')
             sh(f"git add {version_file}")
-            sh(f"git commit -m 'Version bump v{version}'")
 
+        sh(f"git commit -m 'Version bump v{version}' --allow-empty")
         tag = Tag.create(version, message=message)
         changelog = Changelog(project).generate()
         changelog_file = Path("CHANGELOG.md")
