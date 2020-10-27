@@ -66,6 +66,7 @@ class Project:
 
             if "tool" in pyproject and "attribution" in pyproject["tool"]:
                 config = pyproject["tool"]["attribution"]
+                config.setdefault("version_file", True)
                 name = config.get("name", "")
 
         if not name:

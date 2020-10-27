@@ -87,14 +87,34 @@ name = "fizzbuzz"
                 project = Project.load()
                 cwd_mock.assert_called_once()
                 self.assertEqual(project.name, "fizzbuzz")
-                self.assertEqual(project.config, {"name": "fizzbuzz"})
+                self.assertEqual(
+                    project.config, {"name": "fizzbuzz", "version_file": True}
+                )
                 cwd_mock.reset_mock()
 
             with self.subTest("pyproject in given path"):
                 project = Project.load(td)
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, "fizzbuzz")
-                self.assertEqual(project.config, {"name": "fizzbuzz"})
+                self.assertEqual(
+                    project.config, {"name": "fizzbuzz", "version_file": True}
+                )
+
+            with self.subTest("pyproject with no version_file defaults to True"):
+                pyproject.write_text(fake_pyproject.strip())
+                project = Project.load(td)
+                self.assertTrue(project.config.get("version_file"))
+                self.assertEqual(
+                    project.config, {"name": "fizzbuzz", "version_file": True}
+                )
+
+            with self.subTest("pyproject reads version_file"):
+                pyproject.write_text(fake_pyproject.strip() + "\nversion_file=false")
+                project = Project.load(td)
+                self.assertFalse(project.config.get("version_file"))
+                self.assertEqual(
+                    project.config, {"name": "fizzbuzz", "version_file": False}
+                )
 
             with self.subTest("empty pyproject"):
                 pyproject.write_text("\n")

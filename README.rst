@@ -118,6 +118,14 @@ but can be configured in your package's :file:`pyproject.toml` file:
     [tool.attribution]
     name = "foobar"
 
+Attribution automatically maintains a `__version__.py` file.
+Projects already using something like `setuptools_scm` to manage version info, can disable it set `version_file` to `false`.
+
+.. code-block:: toml
+
+    [tool.attribution]
+    version_file = false
+
 More details can be found in the `User Guide`_.
 
 .. _User Guide: https://attribution.omnilib.dev/en/stable/guide.html
