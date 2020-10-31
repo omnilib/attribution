@@ -6,18 +6,17 @@ venv:
 	echo 'run `source .venv/bin/activate` to use virtualenv'
 
 build:
-	python setup.py build
+	python -m flit build
 
 dev:
-	python setup.py develop
+	python -m flit install --symlink
 
 setup:
 	python -m pip install -Ur requirements-dev.txt
 	python -m pip install -Ur requirements.txt
 
 release: lint test clean
-	python setup.py sdist bdist_wheel
-	python -m twine upload dist/*
+	python -m flit publish
 
 format:
 	python -m usort format $(SRCS)

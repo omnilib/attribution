@@ -2,7 +2,7 @@
 # Licensed under the MIT license
 
 """
-Changelog generation from tags and shortlogs
+Generate changelogs based on tag messages and shortlogs
 """
 
 from .__version__ import __version__
