@@ -1,5 +1,3 @@
-SRCS:=attribution setup.py
-
 venv:
 	python -m venv .venv
 	source .venv/bin/activate && make setup dev
@@ -19,13 +17,13 @@ release: lint test clean
 	python -m flit publish
 
 format:
-	python -m usort format $(SRCS)
-	python -m black attribution setup.py
+	python -m usort format attribution
+	python -m black attribution
 
 lint:
-	python -m pylint --rcfile .pylint $(SRCS)
-	python -m usort check $(SRCS)
-	python -m black --check $(SRCS)
+	python -m pylint --rcfile .pylint attribution
+	python -m usort check attribution
+	python -m black --check attribution
 
 test:
 	python -m coverage run -m attribution.tests
