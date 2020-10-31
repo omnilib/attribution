@@ -1,6 +1,23 @@
 attribution
 ===========
 
+v1.3.0
+------
+
+Feature release
+
+* Added `version_file` option in pyproject.toml to disable writing version.py (#12)
+* Added sphinx documentation for the package
+* Tested on Python 3.9a (#15)
+
+```
+$ git shortlog -s v1.2.0...v1.3.0
+    13	John Reese
+     6	Mark Rofail
+     5	pyup.io bot
+```
+
+
 v1.2.0
 ------
 
