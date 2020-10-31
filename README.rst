@@ -68,7 +68,7 @@ tools as part of your release workflow:
     ```
 
 If you prefer and end-to-end solution, attribution can also be used for creating
-release notes, updating a :file:`__version__.py` file with a matching version,
+release notes, updating a ``__version__.py`` file with a matching version,
 and tagging a signed version bump commit containing the final changelog:
 
 .. code-block:: shell-session
@@ -111,15 +111,16 @@ Configure
 ---------
 
 attribution should guess reasonable defaults for most common Python projects,
-but can be configured in your package's :file:`pyproject.toml` file:
+but can be configured in your package's ``pyproject.toml`` file:
 
 .. code-block:: toml
 
     [tool.attribution]
     name = "foobar"
 
-Attribution automatically maintains a `__version__.py` file.
-Projects already using something like `setuptools_scm` to manage version info, can disable it set `version_file` to `false`.
+Attribution automatically maintains a ``__version__.py`` file.
+Projects already using something like ``setuptools_scm`` to manage version info,
+can disable it set ``version_file`` to ``false``.
 
 .. code-block:: toml
 
