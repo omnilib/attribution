@@ -7,11 +7,11 @@ v1.3.1
 Bugfix release
 
 * Fix writing __version__.py file when no [tool.attribution] table found (#16)
-* More debug logging
+* More debug logging, send debug output to stderr
 
 ```
 $ git shortlog -s v1.3.0...v1.3.1
-     3	John Reese
+     5	John Reese
 ```
 
 
