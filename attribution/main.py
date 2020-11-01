@@ -2,6 +2,7 @@
 # Licensed under the MIT license
 
 import logging
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -14,19 +15,24 @@ from .project import Project
 from .tag import Tag
 from .types import Version
 
+LOG = logging.getLogger(__name__)
+
 
 @click.group()
 @click.version_option(__version__, "-V", "--version", prog_name="attribution")
 @click.option("-d", "--debug", is_flag=True, help="Enable debug logging")
 def main(debug: bool = False) -> None:
     """Generate changelogs from tags and shortlog"""
-    logging.basicConfig(level=logging.DEBUG if debug else logging.WARNING)
+    logging.basicConfig(
+        level=logging.DEBUG if debug else logging.WARNING, stream=sys.stderr
+    )
 
 
 @main.command("generate")
 def generate() -> None:
     """Regenerate changelog from existing tags"""
     project = Project.load()
+    LOG.debug(f"project: {project}")
     click.echo(Changelog(project).generate())
 
 
@@ -42,6 +48,7 @@ def generate() -> None:
 def tag_release(version: Version, message: Optional[str]) -> None:
     """Create new tagged release with changelog"""
     project = Project.load()
+    LOG.debug(f"project: {project}")
 
     if message is None:
         tpl = (
@@ -69,6 +76,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
     try:
         # XXX: This is a really hacky wall of commands
         project = Project.load()
+        LOG.debug(f"project: {project}")
 
         if project.config.get("version_file"):
             version_file = Path(project.name) / "__version__.py"
