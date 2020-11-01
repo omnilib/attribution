@@ -121,11 +121,11 @@ name = "fizzbuzz"
                 project = Project.load(td)
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
-                self.assertEqual(project.config, {})
+                self.assertEqual(project.config, {"version_file": True})
 
             with self.subTest("no pyproject"):
                 pyproject.unlink()
                 project = Project.load(td)
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
-                self.assertEqual(project.config, {})
+                self.assertEqual(project.config, {"version_file": True})

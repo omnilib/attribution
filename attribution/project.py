@@ -67,7 +67,7 @@ class Project:
             pyproject = toml.loads(pyproject_path.read_text())
 
             if "tool" in pyproject and "attribution" in pyproject["tool"]:
-                config = pyproject["tool"]["attribution"]
+                config.update(pyproject["tool"]["attribution"])
                 name = config.get("name", "")
 
         if not name:
