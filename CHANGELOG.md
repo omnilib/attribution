@@ -1,6 +1,20 @@
 attribution
 ===========
 
+v1.3.1
+------
+
+Bugfix release
+
+* Fix writing __version__.py file when no [tool.attribution] table found (#16)
+* More debug logging
+
+```
+$ git shortlog -s v1.3.0...v1.3.1
+     3	John Reese
+```
+
+
 v1.3.0
 ------
 
@@ -12,7 +26,7 @@ Feature release
 
 ```
 $ git shortlog -s v1.2.0...v1.3.0
-    13	John Reese
+    14	John Reese
      6	Mark Rofail
      5	pyup.io bot
 ```
