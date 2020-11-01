@@ -58,7 +58,9 @@ class Project:
             path = Path.cwd()
 
         name = ""
-        config: Dict[str, Any] = {}
+        config: Dict[str, Any] = {
+            "version_file": True,
+        }
 
         pyproject_path = path / "pyproject.toml"
         if pyproject_path.is_file():
@@ -66,7 +68,6 @@ class Project:
 
             if "tool" in pyproject and "attribution" in pyproject["tool"]:
                 config = pyproject["tool"]["attribution"]
-                config.setdefault("version_file", True)
                 name = config.get("name", "")
 
         if not name:
