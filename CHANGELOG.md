@@ -1,6 +1,21 @@
 attribution
 ===========
 
+v1.4.0
+------
+
+Feature release:
+
+* New "init" command to setup pyproject.toml and create __version__.py
+* Switches from toml to tomlkit
+
+```
+$ git shortlog -s v1.3.1...v1.4.0
+     6	John Reese
+     1	pyup.io bot
+```
+
+
 v1.3.1
 ------
 
