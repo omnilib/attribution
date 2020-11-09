@@ -2,6 +2,7 @@
 # Licensed under the MIT license
 
 import textwrap
+from pathlib import Path
 
 from jinja2 import Template
 
@@ -20,6 +21,12 @@ class GeneratedFile:
         template = Template(textwrap.dedent(self.TEMPLATE))
         output = template.render(project=self.project, tags=tags, len=len)
         return output
+
+    def write(self) -> Path:
+        content = self.generate()
+        fpath = Path(self.FILENAME.format(project=self.project))
+        fpath.write_text(content)
+        return fpath
 
 
 class Changelog(GeneratedFile):
@@ -51,3 +58,8 @@ class Contributers(GeneratedFile):
 
         {{ project.shortlog }}
         """
+
+
+class VersionFile(GeneratedFile):
+    FILENAME = "{project.package}/__version__.py"
+    TEMPLATE = """__version__ = "{{ project.latest.version }}"\n\n"""

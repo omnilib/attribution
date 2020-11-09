@@ -13,9 +13,9 @@ from ..tag import Tag, Version
 
 class ProjectTest(TestCase):
     def test_project_eq(self):
-        p1 = Project("foo")
-        p2 = Project("bar")
-        p3 = Project("foo")
+        p1 = Project("foo", "foo")
+        p2 = Project("bar", "bar")
+        p3 = Project("foo", "foo")
         not_project = 42
 
         self.assertIsNot(p1, p2)
@@ -34,7 +34,7 @@ class ProjectTest(TestCase):
         ]
         tag_mock.all_tags.return_value = fake_tags
 
-        project = Project(name="foo", config={})
+        project = Project(name="foo", package="foo", config={})
         result = project.tags
         tag_mock.all_tags.assert_called_once()
         self.assertEqual(result, fake_tags)
@@ -44,6 +44,9 @@ class ProjectTest(TestCase):
         tag_mock.all_tags.assert_not_called()
         self.assertEqual(result, fake_tags)
 
+        tag = project.latest
+        self.assertEqual(tag, fake_tags[0])
+
     @patch("attribution.project.LOG")
     @patch("attribution.project.sh")
     def test_shortlog(self, sh_mock, log_mock):
@@ -52,7 +55,7 @@ class ProjectTest(TestCase):
             subprocess.CalledProcessError(1, ()),
         ]
 
-        project = Project("foo")
+        project = Project("foo", "foo")
         result = project.shortlog
         sh_mock.assert_called_with(project.shortlog_cmd)
         self.assertEqual(result, "  10 Foo Bar")
@@ -64,17 +67,27 @@ class ProjectTest(TestCase):
         self.assertEqual(result, "  10 Foo Bar")
 
         sh_mock.reset_mock()
-        project = Project("foo")
+        project = Project("foo", "foo")
         result = project.shortlog
         sh_mock.assert_called_with(project.shortlog_cmd)
         log_mock.exception.assert_called_once()
         self.assertEqual(result, "")
 
     @patch("attribution.project.Path.cwd")
+    def test_pyproject_path(self, cwd_mock):
+        with TemporaryDirectory() as td:
+            td = Path(td)
+            cwd_mock.return_value = td
+
+        self.assertEqual(Project.pyproject_path(), td / "pyproject.toml")
+        self.assertEqual(Project.pyproject_path(td), td / "pyproject.toml")
+
+    @patch("attribution.project.Path.cwd")
     def test_load(self, cwd_mock):
         fake_pyproject = """
 [tool.attribution]
 name = "fizzbuzz"
+package = "fizzbuzz"
         """
 
         with TemporaryDirectory() as td:
@@ -85,10 +98,11 @@ name = "fizzbuzz"
 
             with self.subTest("pyproject in cwd"):
                 project = Project.load()
-                cwd_mock.assert_called_once()
+                cwd_mock.assert_called()
                 self.assertEqual(project.name, "fizzbuzz")
                 self.assertEqual(
-                    project.config, {"name": "fizzbuzz", "version_file": True}
+                    project.config,
+                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": True},
                 )
                 cwd_mock.reset_mock()
 
@@ -97,7 +111,8 @@ name = "fizzbuzz"
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, "fizzbuzz")
                 self.assertEqual(
-                    project.config, {"name": "fizzbuzz", "version_file": True}
+                    project.config,
+                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": True},
                 )
 
             with self.subTest("pyproject with no version_file defaults to True"):
@@ -105,7 +120,8 @@ name = "fizzbuzz"
                 project = Project.load(td)
                 self.assertTrue(project.config.get("version_file"))
                 self.assertEqual(
-                    project.config, {"name": "fizzbuzz", "version_file": True}
+                    project.config,
+                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": True},
                 )
 
             with self.subTest("pyproject reads version_file"):
@@ -113,7 +129,8 @@ name = "fizzbuzz"
                 project = Project.load(td)
                 self.assertFalse(project.config.get("version_file"))
                 self.assertEqual(
-                    project.config, {"name": "fizzbuzz", "version_file": False}
+                    project.config,
+                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": False},
                 )
 
             with self.subTest("empty pyproject"):

@@ -6,7 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-import toml
+import tomlkit
 from attr import dataclass
 
 from .helpers import sh
@@ -18,13 +18,14 @@ LOG = logging.getLogger(__name__)
 @dataclass(eq=False)
 class Project:
     name: str
+    package: str
     config: Dict[str, Any] = {}
     _shortlog: Optional[str] = None
     _tags: Tags = []
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Project):
-            return self.name == other.name
+            return self.name == other.name and self.package == other.package
         return False
 
     @property
@@ -33,6 +34,10 @@ class Project:
             self._tags = Tag.all_tags()
 
         return self._tags
+
+    @property
+    def latest(self) -> Tag:
+        return self.tags[0]
 
     @property
     def shortlog_cmd(self) -> str:
@@ -57,20 +62,31 @@ class Project:
         if path is None:
             path = Path.cwd()
 
+        # defaults
         name = ""
+        package = ""
         config: Dict[str, Any] = {
             "version_file": True,
         }
 
-        pyproject_path = path / "pyproject.toml"
-        if pyproject_path.is_file():
-            pyproject = toml.loads(pyproject_path.read_text())
-
+        if cls.pyproject_path(path).is_file():
+            pyproject = tomlkit.loads(cls.pyproject_path(path).read_text())
             if "tool" in pyproject and "attribution" in pyproject["tool"]:
                 config.update(pyproject["tool"]["attribution"])
                 name = config.get("name", "")
+                package = config.get("package", "")
 
         if not name:
             name = path.name
 
-        return Project(name=name, config=config)
+        if not package:
+            package = path.name
+
+        return Project(name=name, package=package, config=config)
+
+    @classmethod
+    def pyproject_path(cls, path: Optional[Path] = None) -> Path:
+        if path is None:
+            path = Path.cwd()
+
+        return path / "pyproject.toml"

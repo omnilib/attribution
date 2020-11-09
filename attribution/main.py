@@ -7,9 +7,10 @@ from pathlib import Path
 from typing import Optional
 
 import click
+import tomlkit
 
 from attribution import __author__, __version__
-from .generate import Changelog
+from .generate import Changelog, VersionFile
 from .helpers import sh
 from .project import Project
 from .tag import Tag
@@ -26,6 +27,40 @@ def main(debug: bool = False) -> None:
     logging.basicConfig(
         level=logging.DEBUG if debug else logging.WARNING, stream=sys.stderr
     )
+
+
+@main.command("init")
+def init() -> None:
+    project = Project.load()
+    name = click.prompt("Project name", default=project.name)
+    package = click.prompt("Package namespace", default=project.package)
+    version_file = click.confirm(
+        "Use __version__.py file", default=project.config["version_file"]
+    )
+
+    if project.pyproject_path().is_file():
+        pyproject = tomlkit.loads(project.pyproject_path().read_text())
+    else:
+        pyproject = tomlkit.document()
+
+    if "tool" not in pyproject:
+        pyproject.add(tomlkit.nl())
+        pyproject["tool"] = tomlkit.table()
+
+    if "attribution" not in pyproject["tool"]:
+        pyproject["tool"].add(tomlkit.nl())
+        pyproject["tool"]["attribution"] = tomlkit.table()
+
+    pyproject["tool"]["attribution"]["name"] = name
+    pyproject["tool"]["attribution"]["package"] = package
+    pyproject["tool"]["attribution"]["version_file"] = version_file
+
+    project.pyproject_path().write_text(tomlkit.dumps(pyproject))
+
+    # pick up any changes
+    project = Project.load()
+    if version_file:
+        VersionFile(project).write()
 
 
 @main.command("generate")
@@ -79,16 +114,13 @@ def tag_release(version: Version, message: Optional[str]) -> None:
         LOG.debug(f"project: {project}")
 
         if project.config.get("version_file"):
-            version_file = Path(project.name) / "__version__.py"
-            version_file.write_text(f'__version__ = "{version}"\n')
-            sh(f"git add {version_file}")
+            path = VersionFile(project).write()
+            sh(f"git add {path}")
 
         sh(f"git commit -m 'Version bump v{version}' --allow-empty")
         tag = Tag.create(version, message=message)
-        changelog = Changelog(project).generate()
-        changelog_file = Path("CHANGELOG.md")
-        changelog_file.write_text(changelog)
-        sh(f"git add {changelog_file}")
+        changelog = Changelog(project).write()
+        sh(f"git add {changelog}")
         sh("git commit --amend --no-edit")
         tag.update(message=message, signed=True)
 
