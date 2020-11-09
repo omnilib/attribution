@@ -33,6 +33,11 @@ exclude = [
     ".github/",
 ]
 
+[tool.attribution]
+name = "attribution"
+package = "attribution"
+version_file = true
+
 [tool.coverage.run]
 branch = true
 include = ["attribution/*"]

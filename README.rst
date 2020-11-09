@@ -53,7 +53,7 @@ tools as part of your release workflow:
 
     ```
     $ git shortlog -s v0.1...v0.2
-        1 Ash Ketchum
+        1 Ash
         3 Misty
     ```
 
@@ -64,7 +64,7 @@ tools as part of your release workflow:
 
     ```
     $ git shortlog -s ...v0.1
-        1 Ash Ketchum
+        1 Ash
     ```
 
 If you prefer and end-to-end solution, attribution can also be used for creating
@@ -85,7 +85,7 @@ and tagging a signed version bump commit containing the final changelog:
 
     ```
     $ git shortlog -s v0.2...v1.0
-        3 Ash Ketchum
+        3 Ash
         2 Brock
     ```
 
@@ -106,26 +106,25 @@ You can install it from PyPI:
 
     $ pip install attribution
 
-
-Configure
----------
-
 attribution should guess reasonable defaults for most common Python projects,
-but can be configured in your package's ``pyproject.toml`` file:
+but for best results, you should initialize your project configuration:
+
+.. code-block:: shell-session
+
+    $ attribution init
+    Project name [attribution]:
+    Package namespace [attribution]:
+    Use __version__.py file [Y/n]:
+
+This will automatically add the appropriate configuration to your project's
+``pyproject.toml``:
 
 .. code-block:: toml
 
     [tool.attribution]
-    name = "foobar"
-
-Attribution automatically maintains a ``__version__.py`` file.
-Projects already using something like ``setuptools_scm`` to manage version info,
-can disable it set ``version_file`` to ``false``.
-
-.. code-block:: toml
-
-    [tool.attribution]
-    version_file = false
+    name = "attribution"
+    package = "attribution"
+    version_file = true
 
 More details can be found in the `User Guide`_.
 
