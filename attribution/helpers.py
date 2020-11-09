@@ -13,11 +13,17 @@ def sh(*cmd: str) -> str:
     if len(cmd) == 1:
         cmd = tuple(shlex.split(cmd[0]))
     LOG.debug(f"running $ {' '.join(shlex.quote(c) for c in cmd)}")
-    p = subprocess.run(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=True,
-        encoding="utf-8",
-    )
-    return p.stdout
+    try:
+        p = subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=True,
+            encoding="utf-8",
+        )
+        return p.stdout
+    except subprocess.CalledProcessError as e:
+        LOG.debug(
+            f"exit code: {e.returncode}\nstdout:\n{e.stdout}\nstderr:\n{e.stderr}"
+        )
+        raise

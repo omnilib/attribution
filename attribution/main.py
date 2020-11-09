@@ -113,14 +113,18 @@ def tag_release(version: Version, message: Optional[str]) -> None:
         project = Project.load()
         LOG.debug(f"project: {project}")
 
+        # create empty commit and tag with new version
+        sh(f"git commit -m 'Version bump v{version}' --allow-empty")
+        tag = Tag.create(version, message=message)
+
+        # update changelog and version file
+        changelog = Changelog(project).write()
+        sh(f"git add {changelog}")
         if project.config.get("version_file"):
             path = VersionFile(project).write()
             sh(f"git add {path}")
 
-        sh(f"git commit -m 'Version bump v{version}' --allow-empty")
-        tag = Tag.create(version, message=message)
-        changelog = Changelog(project).write()
-        sh(f"git add {changelog}")
+        # update commit and tag
         sh("git commit --amend --no-edit")
         tag.update(message=message, signed=True)
 
