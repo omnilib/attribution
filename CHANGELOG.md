@@ -1,6 +1,22 @@
 attribution
 ===========
 
+v1.5.0
+------
+
+Feature release
+
+- New option "signed_tags" to choose between signed and annotated tags (#1)
+- `tag` command will abort early if the requested tag already exists
+- Improved config documentation
+
+```
+$ git shortlog -s v1.4.0...v1.5.0
+     4	John Reese
+     1	pyup.io bot
+```
+
+
 v1.4.0
 ------
 
