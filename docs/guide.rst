@@ -38,6 +38,13 @@ Options available are described as follows:
     is ``true``), and should match the top-level namespace used when importing
     your package at runtime.
 
+.. attribute:: signed_tags
+    :type: bool
+    :value: True
+
+    Specifies if attribution will use GPG signed tags for git when creating
+    and tagging new versions.
+
 .. attribute:: version_file
     :type: bool
     :value: True

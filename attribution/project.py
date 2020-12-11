@@ -67,6 +67,7 @@ class Project:
         package = ""
         config: Dict[str, Any] = {
             "version_file": True,
+            "signed_tags": True,
         }
 
         if cls.pyproject_path(path).is_file():

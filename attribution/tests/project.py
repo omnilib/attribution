@@ -102,7 +102,12 @@ package = "fizzbuzz"
                 self.assertEqual(project.name, "fizzbuzz")
                 self.assertEqual(
                     project.config,
-                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": True},
+                    {
+                        "name": "fizzbuzz",
+                        "package": "fizzbuzz",
+                        "version_file": True,
+                        "signed_tags": True,
+                    },
                 )
                 cwd_mock.reset_mock()
 
@@ -112,7 +117,12 @@ package = "fizzbuzz"
                 self.assertEqual(project.name, "fizzbuzz")
                 self.assertEqual(
                     project.config,
-                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": True},
+                    {
+                        "name": "fizzbuzz",
+                        "package": "fizzbuzz",
+                        "version_file": True,
+                        "signed_tags": True,
+                    },
                 )
 
             with self.subTest("pyproject with no version_file defaults to True"):
@@ -121,7 +131,12 @@ package = "fizzbuzz"
                 self.assertTrue(project.config.get("version_file"))
                 self.assertEqual(
                     project.config,
-                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": True},
+                    {
+                        "name": "fizzbuzz",
+                        "package": "fizzbuzz",
+                        "version_file": True,
+                        "signed_tags": True,
+                    },
                 )
 
             with self.subTest("pyproject reads version_file"):
@@ -130,7 +145,12 @@ package = "fizzbuzz"
                 self.assertFalse(project.config.get("version_file"))
                 self.assertEqual(
                     project.config,
-                    {"name": "fizzbuzz", "package": "fizzbuzz", "version_file": False},
+                    {
+                        "name": "fizzbuzz",
+                        "package": "fizzbuzz",
+                        "version_file": False,
+                        "signed_tags": True,
+                    },
                 )
 
             with self.subTest("empty pyproject"):
@@ -138,11 +158,15 @@ package = "fizzbuzz"
                 project = Project.load(td)
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
-                self.assertEqual(project.config, {"version_file": True})
+                self.assertEqual(
+                    project.config, {"version_file": True, "signed_tags": True}
+                )
 
             with self.subTest("no pyproject"):
                 pyproject.unlink()
                 project = Project.load(td)
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
-                self.assertEqual(project.config, {"version_file": True})
+                self.assertEqual(
+                    project.config, {"version_file": True, "signed_tags": True}
+                )

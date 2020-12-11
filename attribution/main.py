@@ -120,7 +120,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
 
         # create empty commit and tag with new version
         sh(f"git commit -m 'Version bump v{version}' --allow-empty")
-        tag = Tag.create(version, message=message)
+        tag = Tag.create(version, message=message, signed=False)
 
         # update changelog and version file
         changelog = Changelog(project).write()
@@ -131,7 +131,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
 
         # update commit and tag
         sh("git commit --amend --no-edit")
-        tag.update(message=message, signed=True)
+        tag.update(message=message, signed=project.config["signed_tags"])
 
     except Exception:
         mfile = Path(f".attribution-{version}.txt").resolve()
