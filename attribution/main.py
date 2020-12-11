@@ -85,6 +85,11 @@ def tag_release(version: Version, message: Optional[str]) -> None:
     project = Project.load()
     LOG.debug(f"project: {project}")
 
+    for tag in project.tags:
+        if tag.version == version:
+            click.secho(f"abort: tag {tag.name!r} already exists!", fg="yellow")
+            click.get_current_context().exit(1)
+
     if message is None:
         tpl = (
             f"\n# Write a changelog for version {version}\n#\n"
