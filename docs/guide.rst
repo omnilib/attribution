@@ -24,12 +24,14 @@ the root of your project.
 Options available are described as follows:
 
 .. attribute:: name
+    :type: str
 
     Specifies the project name that will be used at the top of the changelog,
     and anywhere else the project name is displayed. Defaults to the name
     of the current working directory.
 
 .. attribute:: package
+    :type: str
 
     Specifies the package namespace for your project. This is used when
     creating or updating the package's version file (if :attr:`version_file`
@@ -37,6 +39,8 @@ Options available are described as follows:
     your package at runtime.
 
 .. attribute:: version_file
+    :type: bool
+    :value: True
 
     Specifies if attribution should create or update a ``__version__.py`` file
     when initializing the project or tagging new versions. This enables the
