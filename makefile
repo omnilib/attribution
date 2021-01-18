@@ -29,6 +29,11 @@ test:
 	python -m coverage run -m attribution.tests
 	python -m coverage report
 	python -m mypy attribution
+	python -m pessimist --fast --requirements=requirements.txt -c "python -m attribution.tests" .
+
+deps:
+	python -m pessimist --requirements= -c "python -m attribution.main" .
+	python -m pessimist --requirements= -c "python -m attribution.tests" .
 
 .PHONY: html
 html:
