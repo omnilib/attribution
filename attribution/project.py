@@ -9,7 +9,7 @@ from typing import Any, Dict, Optional
 import tomlkit
 from attr import dataclass
 
-from .helpers import sh
+from .helpers import sh, canonical_namespace
 from .tag import Tag, Tags
 
 LOG = logging.getLogger(__name__)
@@ -85,7 +85,7 @@ class Project:
             name = path.name
 
         if not package:
-            package = path.name
+            package = canonical_namespace(path.name)
 
         return Project(name=name, package=package, config=config)
 

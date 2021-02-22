@@ -4,6 +4,7 @@
 import logging
 import shlex
 import subprocess
+from packaging.utils import canonicalize_name
 
 LOG = logging.getLogger(__name__)
 
@@ -27,3 +28,8 @@ def sh(*cmd: str) -> str:
             f"exit code: {e.returncode}\nstdout:\n{e.stdout}\nstderr:\n{e.stderr}"
         )
         raise
+
+
+def canonical_namespace(name: str) -> str:
+    cname = canonicalize_name(name)
+    return cname.replace("-", "_")

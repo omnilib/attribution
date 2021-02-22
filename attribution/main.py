@@ -37,23 +37,35 @@ def init() -> None:
     version_file = click.confirm(
         "Use __version__.py file", default=project.config["version_file"]
     )
+    signed_tags = click.confirm(
+        "Use GPG signed tags", default=project.config["signed_tags"]
+    )
 
     if project.pyproject_path().is_file():
         pyproject = tomlkit.loads(project.pyproject_path().read_text())
+        add_newline = True
     else:
         pyproject = tomlkit.document()
+        add_newline = False
 
     if "tool" not in pyproject:
-        pyproject.add(tomlkit.nl())
-        pyproject["tool"] = tomlkit.table()
+        if add_newline:
+            pyproject.append(None, tomlkit.nl())
+        table = tomlkit.table()
+        # gross, but prevents a blank [tool] table
+        table._is_super_table = True  # pylint: disable=protected-access  
+        pyproject.append("tool", table)
 
-    if "attribution" not in pyproject["tool"]:
-        pyproject["tool"].add(tomlkit.nl())
-        pyproject["tool"]["attribution"] = tomlkit.table()
+    if "attribution" in pyproject["tool"]:
+        table = pyproject["tool"]["attribution"]
+    else:
+        table = tomlkit.table()
+        pyproject["tool"].append("attribution", table)
 
-    pyproject["tool"]["attribution"]["name"] = name
-    pyproject["tool"]["attribution"]["package"] = package
-    pyproject["tool"]["attribution"]["version_file"] = version_file
+    table["name"] = name
+    table["package"] = package
+    table["signed_tags"] = signed_tags
+    table["version_file"] = version_file
 
     project.pyproject_path().write_text(tomlkit.dumps(pyproject))
 
