@@ -1,6 +1,22 @@
 attribution
 ===========
 
+v1.5.1
+------
+
+Bugfix release
+
+* Fix `attribution init` for projects with no version tags (#26)
+* Better namespace guessing for projects with dashes in their names
+* Improved pyproject.toml format from `attribution init`
+
+```
+$ git shortlog -s v1.5.0...v1.5.1
+     5	John Reese
+     2	pyup.io bot
+```
+
+
 v1.5.0
 ------
 
