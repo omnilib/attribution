@@ -131,4 +131,5 @@ class Tag:
         null_tag._shortlog = ""
         return null_tag
 
+
 Tags = List[Tag]

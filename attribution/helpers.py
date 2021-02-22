@@ -4,6 +4,7 @@
 import logging
 import shlex
 import subprocess
+
 from packaging.utils import canonicalize_name
 
 LOG = logging.getLogger(__name__)

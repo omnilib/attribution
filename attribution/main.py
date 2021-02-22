@@ -53,7 +53,7 @@ def init() -> None:
             pyproject.append(None, tomlkit.nl())
         table = tomlkit.table()
         # gross, but prevents a blank [tool] table
-        table._is_super_table = True  # pylint: disable=protected-access  
+        table._is_super_table = True  # pylint: disable=protected-access
         pyproject.append("tool", table)
 
     if "attribution" in pyproject["tool"]:
