@@ -123,5 +123,12 @@ class Tag:
         flag = "--sign" if signed else "--annotate"
         sh("git", "tag", "--force", flag, self.name, "-m", message)
 
+    @classmethod
+    def null(cls):
+        # pylint: disable=protected-access
+        null_tag = Tag("v0", Version("0"))
+        null_tag._message = ""
+        null_tag._shortlog = ""
+        return null_tag
 
 Tags = List[Tag]

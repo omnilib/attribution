@@ -200,3 +200,12 @@ class TagTest(TestCase):
             "git", "tag", "--force", "--sign", "v1.1", "-m", "Now with even more stuff!"
         )
         self.assertIsNone(tag._message)
+
+    @patch("attribution.tag.sh")
+    def test_null_tag(self, sh_mock):
+        tag = Tag.null()
+        self.assertEqual(tag.name, "v0")
+        self.assertEqual(tag.version, Version("0"))
+        self.assertEqual(tag.message, "")
+        self.assertEqual(tag.shortlog, "")
+        sh_mock.assert_not_called()

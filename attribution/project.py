@@ -37,7 +37,11 @@ class Project:
 
     @property
     def latest(self) -> Tag:
-        return self.tags[0]
+        tags = self.tags
+        if tags:
+            return tags[0]
+        else:
+            return Tag.null()
 
     @property
     def shortlog_cmd(self) -> str:

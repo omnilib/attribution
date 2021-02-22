@@ -47,6 +47,14 @@ class ProjectTest(TestCase):
         tag = project.latest
         self.assertEqual(tag, fake_tags[0])
 
+        # null tag as latest
+        null_tag = Tag("v0", Version("0"))
+        tag_mock.all_tags.return_value = []
+        tag_mock.null.return_value = null_tag
+        project = Project(name="foo", package="foo")
+        tag = project.latest
+        self.assertEqual(tag, null_tag)
+
     @patch("attribution.project.LOG")
     @patch("attribution.project.sh")
     def test_shortlog(self, sh_mock, log_mock):
