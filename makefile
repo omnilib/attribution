@@ -31,8 +31,8 @@ test:
 	python -m mypy attribution
 
 .PHONY: html
-html:
-	sphinx-build -b html docs html
+html: venv
+	.venv/bin/sphinx-build -b html docs html
 
 clean:
 	rm -rf build dist html README MANIFEST *.egg-info
