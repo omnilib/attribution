@@ -1,6 +1,20 @@
 attribution
 ===========
 
+v1.5.2
+------
+
+Bugfix release:
+
+* Fix shortlog for first tag in repo (#30)
+
+```
+$ git shortlog -s v1.5.1...v1.5.2
+     3	John Reese
+     2	pyup.io bot
+```
+
+
 v1.5.1
 ------
 
@@ -129,7 +143,7 @@ Placeholder release
 - Name claimed on Github!
 
 ```
-$ git shortlog -s 7441e33a9326e9c3e567600a0eda9732b259b833...v0.0
-     1	John Reese
+$ git shortlog -s v0.0
+     5	John Reese
 ```
 
