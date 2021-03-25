@@ -151,6 +151,24 @@ class TagTest(TestCase):
         log_mock.exception.assert_called_once()
         self.assertEqual(result, "")
 
+        # first tag in repo
+        tag = evolve(proto)
+        sh_mock.reset_mock()
+        sh_mock.side_effect = [
+            "abcdef123456\n",
+            "\n",
+            "shortlog for v1.0\n",
+        ]
+        result = tag.shortlog
+        sh_mock.assert_has_calls(
+            [
+                call("git describe --tags --abbrev=0 --always v1.0~1"),
+                call("git tag -l abcdef123456"),
+            ]
+        )
+        log_mock.exception.assert_called_once()
+        self.assertEqual(result, "shortlog for v1.0")
+
     @patch("attribution.tag.LOG")
     @patch("attribution.tag.sh")
     def test_all_tags(self, sh_mock, log_mock):

@@ -73,7 +73,23 @@ class Tag:
         """Generate the shortlog command to be run."""
         if self._shortlog_cmd is None:
             base = sh(f"git describe --tags --abbrev=0 --always {self.name}~1").strip()
-            self._shortlog_cmd = f"git shortlog -s {base}...{self.name}"
+
+            # If there is no preceding tag, the describe command above will just return
+            # the rev hash of the commit preceding the tag, resulting in a bad shortlog.
+            # We can use `git tag -l <name>` to see if it's a real tag or just a hash.
+            # If it's just a rev, then this is the earliest tag in that tree, and we
+            # should just generate a shortlog without a starting ref.
+            # To save shell commands, we assume that any Version-like name is a tag.
+            try:
+                Version(base)
+            except InvalidVersion:
+                base = sh(f"git tag -l {base}").strip()
+            if base:
+                spec = f"{base}...{self.name}"
+            else:
+                spec = self.name
+
+            self._shortlog_cmd = f"git shortlog -s {spec}"
 
         return self._shortlog_cmd
 
