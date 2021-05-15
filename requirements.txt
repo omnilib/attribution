@@ -1,4 +1,4 @@
-attrs==20.3.0
+attrs==21.2.0
 click==7.1.2
 jinja2==2.11.3
 packaging==20.9
