@@ -1,8 +1,6 @@
 # Copyright 2020 John Reese
 # Licensed under the MIT license
 
-# pylint: disable=protected-access
-
 import subprocess
 from unittest import TestCase
 from unittest.mock import call, patch
@@ -38,31 +36,30 @@ class TagTest(TestCase):
         self.assertGreater(tag2, tag1)
 
     def test_tag_order_other(self):
-        # pylint: disable=pointless-statement, misplaced-comparison-constant
         tag = Tag("1.0", Version("1.0"))
         with self.assertRaises(TypeError):
-            tag < 24
+            _ = tag < 24
 
         with self.assertRaises(TypeError):
-            tag <= 24
+            _ = tag <= 24
 
         with self.assertRaises(TypeError):
-            24 < tag
+            _ = 24 < tag
 
         with self.assertRaises(TypeError):
-            24 <= tag
+            _ = 24 <= tag
 
         with self.assertRaises(TypeError):
-            tag > 24
+            _ = tag > 24
 
         with self.assertRaises(TypeError):
-            tag >= 24
+            _ = tag >= 24
 
         with self.assertRaises(TypeError):
-            24 > tag
+            _ = 24 > tag
 
         with self.assertRaises(TypeError):
-            24 >= tag
+            _ = 24 >= tag
 
     @patch("attribution.tag.LOG")
     @patch("attribution.tag.sh")

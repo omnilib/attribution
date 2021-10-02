@@ -1,3 +1,5 @@
+PKG:=attribution
+
 venv:
 	python -m venv .venv
 	source .venv/bin/activate && make setup dev
@@ -17,18 +19,18 @@ release: lint test clean
 	python -m flit publish
 
 format:
-	python -m usort format attribution
-	python -m black attribution
+	python -m usort format $(PKG)
+	python -m black $(PKG)
 
 lint:
-	python -m pylint --rcfile .pylint attribution
-	python -m usort check attribution
-	python -m black --check attribution
+	python -m flake8 $(PKG)
+	python -m usort check $(PKG)
+	python -m black --check $(PKG)
 
 test:
-	python -m coverage run -m attribution.tests
+	python -m coverage run -m $(PKG).tests
 	python -m coverage report
-	python -m mypy attribution
+	python -m mypy $(PKG)
 
 .PHONY: html
 html: venv

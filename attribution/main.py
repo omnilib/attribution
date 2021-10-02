@@ -9,7 +9,7 @@ from typing import Optional
 import click
 import tomlkit
 
-from attribution import __author__, __version__
+from attribution import __version__
 from .generate import Changelog, VersionFile
 from .helpers import sh
 from .project import Project
@@ -53,7 +53,7 @@ def init() -> None:
             pyproject.append(None, tomlkit.nl())
         table = tomlkit.table()
         # gross, but prevents a blank [tool] table
-        table._is_super_table = True  # pylint: disable=protected-access
+        table._is_super_table = True
         pyproject.append("tool", table)
 
     if "attribution" in pyproject["tool"]:
@@ -158,4 +158,4 @@ def tag_release(version: Version, message: Optional[str]) -> None:
 
 
 if __name__ == "__main__":
-    main(prog_name="attribution")  # pylint: disable=unexpected-keyword-arg
+    main(prog_name="attribution")
