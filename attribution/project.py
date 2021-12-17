@@ -9,7 +9,7 @@ from typing import Any, Dict, Optional
 import tomlkit
 from attr import dataclass
 
-from .helpers import sh, canonical_namespace
+from .helpers import canonical_namespace, sh
 from .tag import Tag, Tags
 
 LOG = logging.getLogger(__name__)
