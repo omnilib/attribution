@@ -4,8 +4,8 @@ build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
 module = "attribution"
-author = "John Reese"
-author-email = "john@noswap.com"
+author = "Amethyst Reese"
+author-email = "amy@noswap.com"
 description-file = "README.rst"
 home-page = "https://attribution.omnilib.dev"
 requires = ["attrs", "click", "jinja2", "packaging", "tomlkit"]

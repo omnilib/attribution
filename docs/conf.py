@@ -20,8 +20,8 @@
 import datetime
 
 project = "attribution"
-copyright = f"{datetime.date.today().year}, John Reese"
-author = "John Reese"
+copyright = f"{datetime.date.today().year}, Amethyst Reese"
+author = "Amethyst Reese"
 
 
 # -- General configuration ---------------------------------------------------
@@ -66,12 +66,12 @@ html_theme_options = {
     "fixed_sidebar": True,
     "badge_branch": "main",
     "github_button": False,
-    "github_user": "jreese",
+    "github_user": "omnilib",
     "github_repo": "attribution",
     "show_powered_by": False,
     "sidebar_collapse": False,
     "extra_nav_links": {
-        "Report Issues": "https://github.com/jreese/attribution/issues",
+        "Report Issues": "https://github.com/omnilib/attribution/issues",
     },
 }
 
