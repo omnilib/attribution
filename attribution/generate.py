@@ -40,7 +40,7 @@ class Changelog(GeneratedFile):
 
         {{ tag.message if tag.message else "" }}
         {% if tag.shortlog -%}
-        ```
+        ```text
         $ {{ tag.shortlog_cmd }}
         {{ tag.shortlog }}
         ```
