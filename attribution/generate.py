@@ -50,10 +50,10 @@ class Changelog(GeneratedFile):
     """
 
 
-class Contributers(GeneratedFile):
-    FILENAME = "CONTRIBUTERS"
+class Contributors(GeneratedFile):
+    FILENAME = "CONTRIBUTORS"
     TEMPLATE = """
-        Contributers
+        Contributors
         ============
 
         {{ project.shortlog }}
