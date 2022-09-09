@@ -75,4 +75,13 @@ class Contributors(GeneratedFile):
 
 class VersionFile(GeneratedFile):
     FILENAME = "{project.package}/__version__.py"
-    TEMPLATE = """__version__ = "{{ project.latest.version }}"\n\n"""
+    TEMPLATE = '''\
+        """
+        This file is automatically handled by attribution.
+
+        Do not edit manually. More info `here <https://attribution.omnilib.dev>`_.
+        """
+
+        __version__ = "{{ project.latest.version }}"
+
+        '''
