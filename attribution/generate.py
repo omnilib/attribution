@@ -60,6 +60,7 @@ class Changelog(GeneratedFile):
         [attribution-badge]:
             https://img.shields.io/badge/attribution-{{ attribution_version }}-informational
         [attribution-url]: https://attribution.omnilib.dev
+
     """
 
 
