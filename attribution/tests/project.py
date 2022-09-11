@@ -113,6 +113,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "ignored_authors": [],
                         "version_file": True,
                         "signed_tags": True,
                     },
@@ -128,6 +129,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "ignored_authors": [],
                         "version_file": True,
                         "signed_tags": True,
                     },
@@ -142,6 +144,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "ignored_authors": [],
                         "version_file": True,
                         "signed_tags": True,
                     },
@@ -156,6 +159,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "ignored_authors": [],
                         "version_file": False,
                         "signed_tags": True,
                     },
@@ -167,7 +171,8 @@ package = "fizzbuzz"
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
                 self.assertEqual(
-                    project.config, {"version_file": True, "signed_tags": True}
+                    project.config,
+                    {"ignored_authors": [], "version_file": True, "signed_tags": True},
                 )
 
             with self.subTest("no pyproject"):
@@ -176,5 +181,6 @@ package = "fizzbuzz"
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, td.name)
                 self.assertEqual(
-                    project.config, {"version_file": True, "signed_tags": True}
+                    project.config,
+                    {"ignored_authors": [], "version_file": True, "signed_tags": True},
                 )

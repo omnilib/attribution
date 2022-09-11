@@ -126,7 +126,10 @@ def tag_release(version: Version, message: Optional[str]) -> None:
 
         if project.tags:
             tag = project.tags[0]
-            git_log = sh(f"git log --reverse {tag.name}..")
+            log_cmd = ["git", "log", "--reverse", f"{tag.name}..", "--invert-grep"]
+            for author in project.config["ignored_authors"]:
+                log_cmd += [f"--author={author}"]
+            git_log = sh(*log_cmd)
             tpl += f"#\n# Changes since {tag.name}:\n#\n"
             tpl += "".join(f"# {line}\n" for line in git_log.splitlines(keepends=False))
 
