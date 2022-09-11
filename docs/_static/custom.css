@@ -15,6 +15,22 @@ div.omnilib-badges a {
 }
 
 div.omnilib-badges a:hover {
-    color: #777;
+    color: #97F;
     border: none;
 }
+
+div.sphinxsidebarwrapper h1.logo a {
+    font-family: ff-tisa-web-pro, Georgia, serif;
+}
+
+dl.function, dl.attribute, dl.class, dl.method, dl.field-list, dl.data {
+    margin-bottom: 15px;
+}
+
+div.deprecated {
+    margin: 20px 0px;
+    padding: 10px 30px;
+    background-color: #EEE;
+    border: 1px solid #CCC;
+}
+
