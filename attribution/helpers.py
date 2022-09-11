@@ -10,19 +10,26 @@ from packaging.utils import canonicalize_name
 LOG = logging.getLogger(__name__)
 
 
-def sh(*cmd: str) -> str:
+def sh(*cmd: str, raw: bool = False) -> str:
     """Run a simple command and return mixed stdout/stderr; raise on non-zero exit"""
     if len(cmd) == 1:
         cmd = tuple(shlex.split(cmd[0]))
     LOG.debug(f"running $ {' '.join(shlex.quote(c) for c in cmd)}")
     try:
-        p = subprocess.run(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            check=True,
-            encoding="utf-8",
-        )
+        if raw:
+            p = subprocess.run(
+                cmd,
+                check=True,
+                encoding="utf-8",
+            )
+        else:
+            p = subprocess.run(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                check=True,
+                encoding="utf-8",
+            )
         return p.stdout
     except subprocess.CalledProcessError as e:
         LOG.debug(

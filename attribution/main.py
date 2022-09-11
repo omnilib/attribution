@@ -91,6 +91,22 @@ def debug() -> None:
     pprint(project)
 
 
+@main.command("log")
+def show_log() -> None:
+    """Show log of revisions since last tag"""
+    project = Project.load()
+    if project.tags:
+        tag = project.tags[0]
+        log_cmd = ["git", "log", "--reverse", f"{tag.name}.."]
+    else:
+        log_cmd = ["git", "log", "--reverse"]
+
+    log_cmd += ["--invert-grep"]
+    for author in project.config["ignored_authors"]:
+        log_cmd += [f"--author={author}"]
+    sh(*log_cmd, raw=True)
+
+
 @main.command("generate")
 def generate() -> None:
     """Regenerate changelog from existing tags"""
