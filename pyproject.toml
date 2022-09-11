@@ -38,6 +38,7 @@ name = "attribution"
 package = "attribution"
 ignored_authors = ["dependabot", "pyup.io bot"]
 version_file = true
+signed_tags = true
 
 [tool.coverage.run]
 branch = true
