@@ -77,8 +77,10 @@ class Project:
 
         if cls.pyproject_path(path).is_file():
             pyproject = tomlkit.loads(cls.pyproject_path(path).read_text())
-            if "tool" in pyproject and "attribution" in pyproject["tool"]:
-                config.update(pyproject["tool"]["attribution"])
+            tool = pyproject.get("tool", {})
+            tool_attribution = tool.get("attribution", {})
+            if tool_attribution:
+                config.update(tool_attribution)
                 name = config.get("name", "")
                 package = config.get("package", "")
                 ignored_authors = config.get("ignored_authors", [])
