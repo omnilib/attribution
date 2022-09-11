@@ -16,6 +16,8 @@ following this example:
     [tool.attribution]
     name = "Project"
     package = "project"
+    ignored_authors = ["dependabot"]
+    signed_tags = true
     version_file = true
 
 These options can be added automatically by running ``attribution init`` from
@@ -37,6 +39,18 @@ Options available are described as follows:
     creating or updating the package's version file (if :attr:`version_file`
     is ``true``), and should match the top-level namespace used when importing
     your package at runtime.
+
+.. attribute:: ignored_authors
+    :type: str | list[str]
+    :value: []
+
+    List of author names (or patterns) that will be ignored and excluded when
+    showing project revisions. For example, when tagging a new release, any
+    configured authors will be excluded from the list of revisions displayed
+    as part of the message template.
+
+    This can be helpful for excluding noisy or frequent commits from automated
+    sources that aren't likely to be relevant when writing release notes.
 
 .. attribute:: signed_tags
     :type: bool
