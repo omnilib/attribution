@@ -19,13 +19,11 @@ release: lint test clean
 	python -m flit publish
 
 format:
-	python -m usort format $(PKG)
-	python -m black $(PKG)
+	python -m ufmt format $(PKG)
 
 lint:
 	python -m flake8 $(PKG)
-	python -m usort check $(PKG)
-	python -m black --check $(PKG)
+	python -m ufmt check $(PKG)
 
 test:
 	python -m coverage run -m $(PKG).tests
