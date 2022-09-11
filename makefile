@@ -33,8 +33,8 @@ test:
 	python -m mypy $(PKG)
 
 .PHONY: html
-html: venv
-	.venv/bin/sphinx-build -b html docs html
+html:
+	.venv/bin/sphinx-build -ab html docs html
 
 clean:
 	rm -rf build dist html README MANIFEST *.egg-info
