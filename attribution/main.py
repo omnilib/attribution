@@ -48,19 +48,19 @@ def init() -> None:
         pyproject = tomlkit.document()
         add_newline = False
 
-    if "tool" not in pyproject:
+    tool = pyproject.get("tool", None)
+    if tool is None:
         if add_newline:
             pyproject.append(None, tomlkit.nl())
-        table = tomlkit.table()
+        tool = tomlkit.table()
         # gross, but prevents a blank [tool] table
-        table._is_super_table = True
-        pyproject.append("tool", table)
+        tool._is_super_table = True
+        pyproject.append("tool", tool)
 
-    if "attribution" in pyproject["tool"]:
-        table = pyproject["tool"]["attribution"]
-    else:
+    table = tool.get("attribution", None)
+    if table is None:
         table = tomlkit.table()
-        pyproject["tool"].append("attribution", table)
+        tool.append("attribution", table)
 
     table["name"] = name
     table["package"] = package
