@@ -24,7 +24,7 @@ appropriate tools and dependencies:
 Before submitting a pull request, please ensure
 that you have done the following:
 
-* Documented changes or features in README.md
+* Documented changes or features in `README.md`
 * Added appropriate license headers to new files
 * Written or modified tests for new functionality
 * Used `make format` to format code appropriately

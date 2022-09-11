@@ -40,7 +40,7 @@ class Changelog(GeneratedFile):
 
         {{ tag.message if tag.message else "" }}
         {% if tag.shortlog -%}
-        ```
+        ```text
         $ {{ tag.shortlog_cmd }}
         {{ tag.shortlog }}
         ```
@@ -50,10 +50,10 @@ class Changelog(GeneratedFile):
     """
 
 
-class Contributers(GeneratedFile):
-    FILENAME = "CONTRIBUTERS"
+class Contributors(GeneratedFile):
+    FILENAME = "CONTRIBUTORS"
     TEMPLATE = """
-        Contributers
+        Contributors
         ============
 
         {{ project.shortlog }}
