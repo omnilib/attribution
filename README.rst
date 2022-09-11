@@ -99,7 +99,7 @@ attribution as well.
 Install
 -------
 
-attribution requires Python 3.6 or newer.
+attribution requires Python 3.7 or newer.
 You can install it from PyPI:
 
 .. code-block:: shell-session
