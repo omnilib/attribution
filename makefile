@@ -32,6 +32,10 @@ test:
 	python -m coverage report
 	python -m mypy $(PKG)
 
+deps:
+	python -m pessimist --requirements= -c "python -m attribution.tests" .
+
+
 .PHONY: html
 html:
 	.venv/bin/sphinx-build -ab html docs html
