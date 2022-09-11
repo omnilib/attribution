@@ -38,6 +38,30 @@ Actions
 Info
 ^^^^
 
+.. attribute:: log
+
+    Print a log of revisions since the last tagged version, from oldest to
+    newest. :attr:`Ignored authors <ignored_authors>` are automatically
+    filtered from the resulting output. This is the same revision log presented
+    to the user when :attr:`tagging a new release <tag>`.
+
+    .. code-block:: shell-session
+
+        $ attribution log
+        commit 77315cfffd0b67037740463d0588e947d16d6e53
+        Author: Amethyst Reese <amy@n7.gg>
+        Date:   Sun Sep 11 00:06:11 2022 -0700
+
+            Better theme from ufmt
+
+        commit e1c44e46720253070ade5eb6f35d2a160e7b6fc5 (upstream/main, main)
+        Author: Amethyst Reese <amy@n7.gg>
+        Date:   Sun Sep 11 00:21:46 2022 -0700
+
+            Basic documentation for commands
+
+        ...
+
 .. attribute:: debug
 
     Prints debug information about your project and configuration.
