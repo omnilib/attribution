@@ -4,7 +4,7 @@
 import logging
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import Any, Callable, Optional
 
 import click
 import tomlkit
@@ -73,6 +73,22 @@ def init() -> None:
     project = Project.load()
     if version_file:
         VersionFile(project).write()
+
+
+@main.command("debug")
+def debug() -> None:
+    """Dump debug info about project"""
+    pprint: Callable[[Any], None]
+    try:
+        import rich
+
+        pprint = rich.print
+    except ImportError:
+        pprint = click.echo
+
+    project = Project.load()
+    pprint(f"pyproject.toml: {project.pyproject_path()}")
+    pprint(project)
 
 
 @main.command("generate")
