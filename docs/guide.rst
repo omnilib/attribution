@@ -1,6 +1,60 @@
 User Guide
 ==========
 
+Commands
+--------
+
+attribution has multiple commands broken into two categories: info commands
+that display project state to the user, and actions that modify project state
+or configuration.
+
+Actions
+^^^^^^^
+
+.. attribute:: init
+
+    Initialize configuration for a new project, with interactive prompts.
+    Writes or updates the ``[tool.attribution]`` table in your project's
+    ``pyproject.toml`` with any chosen configuration options.
+
+    .. code-block:: shell-session
+
+        $ attribution init
+        Project name [project]:
+        Package namespace [project]:
+        Use __version__.py file [Y/n]:
+        Use GPG signed tags [Y/n]:
+
+.. attribute:: tag
+
+    Create a new, tagged release. This process automates the following steps:
+
+    - Prompt the user for a changelog entry
+    - Write the updated ``CHANGELOG``
+    - Write the updated :attr:`version file <version_file>`
+    - Create a "version bump" commit
+    - Created an annotated (or :attr:`signed <signed_tags>`) tag from that commit
+
+Info
+^^^^
+
+.. attribute:: debug
+
+    Prints debug information about your project and configuration.
+
+    .. code-block:: shell-session
+
+        $ attribution debug
+        pyproject.toml: /home/user/project/pyproject.toml
+        Project(
+            name='Project',
+            package='project',
+            config={'ignored_authors': [], 'version_file': True, 'signed_tags': True, 'name': 'Project', 'package': 'project'},
+            _shortlog=None,
+            _tags=[]
+        )
+
+
 Configuration
 -------------
 
