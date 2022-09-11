@@ -36,7 +36,7 @@ exclude = [
 [tool.attribution]
 name = "attribution"
 package = "attribution"
-ignore_authors = ["dependabot", "pyup.io bot"]
+ignored_authors = ["dependabot", "pyup.io bot"]
 version_file = true
 
 [tool.coverage.run]
