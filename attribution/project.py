@@ -2,15 +2,17 @@
 # Licensed under the MIT license
 
 import logging
+import re
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Sequence
 
 import tomlkit
 from attr import dataclass
 
 from .helpers import canonical_namespace, sh
 from .tag import Tag, Tags
+from .types import Version
 
 LOG = logging.getLogger(__name__)
 
@@ -34,6 +36,12 @@ class Project:
             self._tags = Tag.all_tags()
 
         return self._tags
+
+    def get_tag(self, version: Version) -> Optional[Tag]:
+        for tag in self.tags:
+            if tag.version == version:
+                return tag
+        return None
 
     @property
     def latest(self) -> Tag:
@@ -60,6 +68,25 @@ class Project:
                 self._shortlog = ""
 
         return self._shortlog
+
+    def log_since_tag_cmd(self, tag: Optional[Tag] = None) -> Sequence[str]:
+        if tag:
+            log_cmd = ["git", "log", "--reverse", f"{tag.name}.."]
+        else:
+            log_cmd = ["git", "log", "--reverse"]
+
+        ignored_authors = self.config.get("ignored_authors", [])
+        if ignored_authors:
+            inner_pattern = "|".join(
+                re.escape(author) for author in self.config["ignored_authors"]
+            )
+            log_cmd += [
+                "--perl-regexp",
+                "--regexp-ignore-case",
+                rf"--author=^((?!({inner_pattern})).*)$",
+            ]
+
+        return log_cmd
 
     @classmethod
     def load(cls, path: Optional[Path] = None) -> "Project":

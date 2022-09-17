@@ -93,20 +93,17 @@ def debug() -> None:
 
 
 @main.command("log")
-def show_log() -> None:
+@click.argument("version", type=Version, default=None, required=False)
+def show_log(version: Version) -> None:
     """Show log of revisions since last tag"""
     project = Project.load()
-    if project.tags:
+    tag: Optional[Tag] = None
+    if version:
+        tag = project.get_tag(version)
+    elif project.tags:
         tag = project.tags[0]
-        log_cmd = ["git", "log", "--reverse", f"{tag.name}.."]
-    else:
-        log_cmd = ["git", "log", "--reverse"]
 
-    if project.config["ignored_authors"]:
-        log_cmd += ["--invert-grep"]
-        for author in project.config["ignored_authors"]:
-            log_cmd += [f"--author={author}"]
-    sh(*log_cmd, raw=True)
+    sh(*project.log_since_tag_cmd(tag), raw=True)
 
 
 @main.command("generate")
@@ -144,12 +141,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
 
         if project.tags:
             tag = project.tags[0]
-            log_cmd = ["git", "log", "--reverse", f"{tag.name}.."]
-            if project.config["ignored_authors"]:
-                log_cmd += ["--invert-grep"]
-                for author in project.config["ignored_authors"]:
-                    log_cmd += [f"--author={author}"]
-            git_log = sh(*log_cmd)
+            git_log = sh(*project.log_since_tag_cmd(tag))
             tpl += f"#\n# Changes since {tag.name}:\n#\n"
             tpl += "".join(f"# {line}\n" for line in git_log.splitlines(keepends=False))
 

@@ -81,6 +81,53 @@ class ProjectTest(TestCase):
         log_mock.exception.assert_called_once()
         self.assertEqual(result, "")
 
+    def test_log_since_tag_cmd(self):
+        tags = [
+            Tag("v1.1", Version("1.1")),
+            Tag("v1.0", Version("1.0")),
+        ]
+        project1 = Project("foo", "foo")
+        project2 = Project("foo", "foo")
+        project2._tags = tags
+
+        with self.subTest("no ignores, no tag"):
+            result = project1.log_since_tag_cmd()
+            expected = ["git", "log", "--reverse"]
+            self.assertListEqual(expected, result)
+
+        with self.subTest("no ignores, with tag"):
+            result = project2.log_since_tag_cmd(tags[0])
+            expected = ["git", "log", "--reverse", "v1.1.."]
+            self.assertListEqual(expected, result)
+
+        project1.config["ignored_authors"] = ["dependabot[bot]", "pyup.io"]
+        project2.config["ignored_authors"] = ["dependabot[bot]", "pyup.io"]
+
+        with self.subTest("with ignores, no tag"):
+            result = project1.log_since_tag_cmd()
+            expected = [
+                "git",
+                "log",
+                "--reverse",
+                "--perl-regexp",
+                "--regexp-ignore-case",
+                r"--author=^((?!(dependabot\[bot\]|pyup\.io)).*)$",
+            ]
+            self.assertListEqual(expected, result)
+
+        with self.subTest("with ignores, with tag"):
+            result = project2.log_since_tag_cmd(tags[0])
+            expected = [
+                "git",
+                "log",
+                "--reverse",
+                "v1.1..",
+                "--perl-regexp",
+                "--regexp-ignore-case",
+                r"--author=^((?!(dependabot\[bot\]|pyup\.io)).*)$",
+            ]
+            self.assertListEqual(expected, result)
+
     @patch("attribution.project.Path.cwd")
     def test_pyproject_path(self, cwd_mock):
         with TemporaryDirectory() as td:

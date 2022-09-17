@@ -133,6 +133,10 @@ Options available are described as follows:
     This can be helpful for excluding noisy or frequent commits from automated
     sources that aren't likely to be relevant when writing release notes.
 
+    **Note:** this feature currently requires your ``git`` binary be compiled
+    with ``USE_LIBPCRE`` support. You can test this availability by running
+    ``git log --perl-regexp --author=dependabot``.
+
 .. attribute:: signed_tags
     :type: bool
     :value: True
