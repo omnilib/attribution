@@ -87,6 +87,7 @@ def debug() -> None:
         pprint = click.echo
 
     project = Project.load()
+    project.tags
     pprint(f"pyproject.toml: {project.pyproject_path()}")
     pprint(project)
 
