@@ -102,9 +102,10 @@ def show_log() -> None:
     else:
         log_cmd = ["git", "log", "--reverse"]
 
-    log_cmd += ["--invert-grep"]
-    for author in project.config["ignored_authors"]:
-        log_cmd += [f"--author={author}"]
+    if project.config["ignored_authors"]:
+        log_cmd += ["--invert-grep"]
+        for author in project.config["ignored_authors"]:
+            log_cmd += [f"--author={author}"]
     sh(*log_cmd, raw=True)
 
 
