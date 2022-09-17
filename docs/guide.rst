@@ -41,9 +41,11 @@ Info
 .. attribute:: log
 
     Print a log of revisions since the last tagged version, from oldest to
-    newest. :attr:`Ignored authors <ignored_authors>` are automatically
-    filtered from the resulting output. This is the same revision log presented
-    to the user when :attr:`tagging a new release <tag>`.
+    newest. This is the same revision log presented to the user when
+    :attr:`tagging a new release <tag>`.
+
+    **Experimental:** :attr:`Ignored authors <ignored_authors>` are automatically
+    filtered from the resulting output.
 
     .. code-block:: shell-session
 
@@ -83,7 +85,7 @@ Configuration
 -------------
 
 All configuration for attribution is done via the :file:`pyproject.toml` file.
-This ensures that all maintainers for your project are using a shared 
+This ensures that all maintainers for your project are using a shared
 configuration when generating the changelog or tagging new releases.
 
 Specifying options requires adding them to the ``tool.attribution`` namespace,
@@ -122,6 +124,7 @@ Options available are described as follows:
     :type: str | list[str]
     :value: []
 
+    **Experimental:**
     List of author names (or patterns) that will be ignored and excluded when
     showing project revisions. For example, when tagging a new release, any
     configured authors will be excluded from the list of revisions displayed
