@@ -51,7 +51,7 @@ Feature release
 ```text
 $ git shortlog -s v1.5.2...v1.6.0
     28	Amethyst Reese
-     6	John Reese
+     6	Amethyst Reese
      5	Samuel Giffard
     48	dependabot[bot]
      4	pyup.io bot
@@ -67,7 +67,7 @@ Bugfix release:
 
 ```text
 $ git shortlog -s v1.5.1...v1.5.2
-     3	John Reese
+     3	Amethyst Reese
      2	pyup.io bot
 ```
 
@@ -83,7 +83,7 @@ Bugfix release
 
 ```text
 $ git shortlog -s v1.5.0...v1.5.1
-     5	John Reese
+     5	Amethyst Reese
      2	pyup.io bot
 ```
 
@@ -99,7 +99,7 @@ Feature release
 
 ```text
 $ git shortlog -s v1.4.0...v1.5.0
-     4	John Reese
+     4	Amethyst Reese
      1	pyup.io bot
 ```
 
@@ -114,7 +114,7 @@ Feature release:
 
 ```text
 $ git shortlog -s v1.3.1...v1.4.0
-     6	John Reese
+     6	Amethyst Reese
      1	pyup.io bot
 ```
 
@@ -129,7 +129,7 @@ Bugfix release
 
 ```text
 $ git shortlog -s v1.3.0...v1.3.1
-     5	John Reese
+     5	Amethyst Reese
 ```
 
 
@@ -144,7 +144,7 @@ Feature release
 
 ```text
 $ git shortlog -s v1.2.0...v1.3.0
-    14	John Reese
+    14	Amethyst Reese
      6	Mark Rofail
      5	pyup.io bot
 ```
@@ -162,7 +162,7 @@ Feature release:
 
 ```text
 $ git shortlog -s v1.1...v1.2.0
-    13	John Reese
+    13	Amethyst Reese
 ```
 
 
@@ -175,7 +175,7 @@ Bugfix release
 
 ```text
 $ git shortlog -s v1.0...v1.1
-     5	John Reese
+     5	Amethyst Reese
 ```
 
 
@@ -188,7 +188,7 @@ Initial release
 
 ```text
 $ git shortlog -s v0.0...v1.0
-     1	John Reese
+     1	Amethyst Reese
 ```
 
 
@@ -201,7 +201,7 @@ Placeholder release
 
 ```text
 $ git shortlog -s v0.0
-     5	John Reese
+     5	Amethyst Reese
 ```
 
 [attribution-badge]:
