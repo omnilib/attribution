@@ -20,7 +20,7 @@ classifiers = [
     "Topic :: Utilities",
     "Typing :: Typed",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
     "attrs >= 19.2.0",
     "click >= 8.0",
