@@ -9,7 +9,7 @@ build:
 	python -m flit build
 
 install:
-	python -m pip install -Ue .[dev]
+	python -m pip install -Ue .[dev,docs]
 
 release: lint test clean
 	python -m flit publish

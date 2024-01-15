@@ -39,11 +39,13 @@ dev = [
     "mypy==0.971",
     "pessimist==0.9.3",
     "rich==12.5.1",
-    "sphinx==5.1.1; python_version >= '3.8'",
-    "sphinx-mdinclude==0.5.2",
     "ufmt==2.0.0",
     "usort==1.0.4",
     "wheel==0.38.4",
+]
+docs = [
+    "sphinx==5.1.1",
+    "sphinx-mdinclude==0.5.3",
 ]
 
 [project.urls]
