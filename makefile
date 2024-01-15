@@ -1,4 +1,5 @@
 PKG:=attribution
+EXTRAS:=dev,docs
 
 venv:
 	python -m venv .venv
@@ -9,7 +10,7 @@ build:
 	python -m flit build
 
 install:
-	python -m pip install -Ue .[dev,docs]
+	python -m pip install -Ue .[$(EXTRAS)]
 
 release: lint test clean
 	python -m flit publish
