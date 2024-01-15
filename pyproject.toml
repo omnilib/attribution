@@ -1,21 +1,15 @@
 [build-system]
-requires = ["flit_core >=3,<4"]
+requires = ["flit_core >=3.8,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module = "attribution"
-author = "Amethyst Reese"
-author-email = "amy@noswap.com"
-description-file = "README.rst"
-home-page = "https://attribution.omnilib.dev"
-requires = [
-    "attrs >= 19.2.0",
-    "click >= 8.0",
-    "jinja2 >= 2.7",
-    "packaging >= 16.2",
-    "tomlkit >= 0.7.0",
+[project]
+name = "attribution"
+readme = "README.rst"
+authors = [
+    {name="Amethyst Reese", email="amethyst@n7.gg"},
 ]
-requires-python = ">=3.7"
+license = {file="LICENSE"}
+dynamic = ["version", "description"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -26,12 +20,38 @@ classifiers = [
     "Topic :: Utilities",
     "Typing :: Typed",
 ]
+requires-python = ">=3.7"
+dependencies = [
+    "attrs >= 19.2.0",
+    "click >= 8.0",
+    "jinja2 >= 2.7",
+    "packaging >= 16.2",
+    "tomlkit >= 0.7.0",
+]
 
-[tool.flit.metadata.urls]
-Documentation = "https://attribution.omnilib.dev/en/latest/"
+[project.optional-dependencies]
+dev = [
+    "black==22.8.0",
+    "coverage==6.4.4",
+    "flake8==5.0.4",
+    "flake8-bugbear==22.8.23",
+    "flit==3.7.1",
+    "mypy==0.971",
+    "pessimist==0.9.3",
+    "rich==12.5.1",
+    "sphinx==5.1.1; python_version >= '3.8'",
+    "sphinx-mdinclude==0.5.2",
+    "ufmt==2.0.0",
+    "usort==1.0.4",
+    "wheel==0.38.4",
+]
+
+[project.urls]
+Documentation = "https://attribution.omnilib.dev"
 Github = "https://github.com/omnilib/attribution"
+Changelog = "https://attribution.omnilib.dev/en/latest/changelog.html"
 
-[tool.flit.scripts]
+[project.scripts]
 attribution = "attribution.main:main"
 
 [tool.flit.sdist]

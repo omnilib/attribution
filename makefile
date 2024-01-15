@@ -2,18 +2,14 @@ PKG:=attribution
 
 venv:
 	python -m venv .venv
-	source .venv/bin/activate && make setup dev
+	source .venv/bin/activate && make install
 	echo 'run `source .venv/bin/activate` to use virtualenv'
 
 build:
 	python -m flit build
 
-dev:
-	python -m flit install --symlink
-
-setup:
-	python -m pip install -Ur requirements-dev.txt
-	python -m pip install -Ur requirements.txt
+install:
+	python -m pip install -Ue .[dev]
 
 release: lint test clean
 	python -m flit publish
@@ -32,7 +28,6 @@ test:
 
 deps:
 	python -m pessimist --requirements= -c "python -m attribution.tests" .
-
 
 .PHONY: html
 html:
