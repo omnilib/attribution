@@ -3,27 +3,18 @@ attribution
 
 Automate releases and changelogs based on commit tags and shortlogs.
 
-.. image:: https://img.shields.io/pypi/l/aiosqlite.svg
-   :target: https://github.com/omnilib/aiosqlite/blob/main/LICENSE
-   :alt: MIT Licensed
+.. image:: https://readthedocs.org/projects/attribution/badge/?version=stable
+   :target: https://attribution.omnilib.dev/en/stable/
+   :alt: Documentation Status
 .. image:: https://img.shields.io/pypi/v/attribution.svg
    :target: https://pypi.org/project/attribution
    :alt: PyPI Release
 .. image:: https://img.shields.io/badge/change-log-blue
    :target: https://github.com/omnilib/attribution/blob/main/CHANGELOG.md
    :alt: Changelog
-.. image:: https://readthedocs.org/projects/attribution/badge/?version=stable
-   :target: https://attribution.omnilib.dev/en/stable/
-   :alt: Documentation Status
-.. image:: https://img.shields.io/codecov/c/github/omnilib/attribution/main.svg
-   :target: https://codecov.io/gh/omnilib/attribution
-   :alt: Code Coverage
-.. image:: https://github.com/omnilib/attribution/workflows/Build/badge.svg
-   :target: https://github.com/omnilib/attribution/actions
-   :alt: Build Status
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/psf/black
-   :alt: Code Style Black
+.. image:: https://img.shields.io/pypi/l/aiosqlite.svg
+   :target: https://github.com/omnilib/aiosqlite/blob/main/LICENSE
+   :alt: MIT Licensed
 
 attribution provides a simple tool for automating a basic release workflow
 for Python projects. At its core, it generates Markdown-formatted changelogs
