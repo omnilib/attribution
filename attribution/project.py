@@ -17,13 +17,14 @@ from .types import Version
 LOG = logging.getLogger(__name__)
 
 
-@dataclass(eq=False)
+@dataclass
 class Project:
     name: str
     package: str
     config: Dict[str, Any] = field(default_factory=dict)
-    _shortlog: Optional[str] = None
-    _tags: Tags = field(default_factory=list)
+    root: Path = field(default_factory=Path.cwd)
+    _shortlog: Optional[str] = field(default=None, compare=False)
+    _tags: Tags = field(default_factory=list, compare=False)
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Project):
@@ -97,6 +98,7 @@ class Project:
         name = ""
         package = ""
         config: Dict[str, Any] = {
+            "cargo_packages": [],
             "ignored_authors": [],
             "version_file": True,
             "signed_tags": True,
@@ -133,7 +135,12 @@ class Project:
         if not package:
             package = canonical_namespace(path.name)
 
-        return Project(name=name, package=package, config=config)
+        return Project(
+            name=name,
+            package=package,
+            config=config,
+            root=path,
+        )
 
     @classmethod
     def pyproject_path(cls, path: Optional[Path] = None) -> Path:
