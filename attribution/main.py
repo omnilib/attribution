@@ -10,7 +10,7 @@ import click
 import tomlkit
 
 from attribution import __version__
-from .generate import Changelog, VersionFile
+from .generate import CargoFile, Changelog, VersionFile
 from .helpers import sh
 from .project import Project
 from .tag import Tag
@@ -171,6 +171,9 @@ def tag_release(version: Version, message: Optional[str]) -> None:
         if project.config.get("version_file"):
             path = VersionFile(project).write()
             sh(f"git add {path}")
+        if cargo_packages := project.config.get("cargo_packages"):
+            for cargo_file in CargoFile.search(project, cargo_packages):
+                cargo_file.write()
 
         # update commit and tag
         sh("git commit --amend --no-edit")

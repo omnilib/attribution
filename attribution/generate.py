@@ -3,18 +3,34 @@
 
 import textwrap
 from pathlib import Path
+from typing import Any, List, Tuple
 
+import tomlkit
 from jinja2 import Template
 
 from .project import Project
 
 
 class GeneratedFile:
+    EXPECTS: Tuple[str, ...] = ()
     FILENAME: str = "FAKE.md"
     TEMPLATE: str = "FAKE FILE, DO NOT COMMIT!"
 
-    def __init__(self, project: Project):
+    def __init__(self, project: Project, **kwargs: str):
         self.project = project
+        assert all(kw in kwargs for kw in self.EXPECTS)
+        self.kwargs = kwargs
+        self.filename = project.root / self.FILENAME.format(project=project, **kwargs)
+
+    def __eq__(self, other: Any) -> bool:
+        return (  # noqa E721
+            type(self) == type(other)
+            and self.project == other.project
+            and self.kwargs == other.kwargs
+        )
+
+    def __repr__(self) -> str:
+        return f"CargoFile({self.project!r}, **{self.kwargs!r})"
 
     def generate(self) -> str:
         tags = self.project.tags
@@ -23,14 +39,14 @@ class GeneratedFile:
             project=self.project,
             tags=tags,
             len=len,
+            **self.kwargs,
         )
         return output
 
     def write(self) -> Path:
         content = self.generate()
-        fpath = Path(self.FILENAME.format(project=self.project))
-        fpath.write_text(content)
-        return fpath
+        self.filename.write_text(content)
+        return self.filename
 
 
 class Changelog(GeneratedFile):
@@ -84,3 +100,59 @@ class VersionFile(GeneratedFile):
         __version__ = "{{ project.latest.version }}"
 
         '''
+
+
+class CargoFile(GeneratedFile):
+    EXPECTS = ("package_name", "package_dir")
+    FILENAME = "{package_dir}/Cargo.toml"
+
+    def generate(self) -> str:
+        assert self.filename.is_file()
+        package_name = self.kwargs["package_name"]
+
+        data = tomlkit.loads(self.filename.read_text())
+        assert "package" in data
+        package_data: tomlkit.items.Table = data.get("package", tomlkit.table())
+        assert package_data.get("name", "") == package_name
+        package_data["version"] = str(self.project.latest.version)
+        return tomlkit.dumps(data)
+
+    def write(self) -> Path:
+        fn = super().write()
+        assert fn.name == "Cargo.toml"
+        lock_file = fn.with_suffix(".lock")
+        if lock_file.is_file():
+            package_name = self.kwargs["package_name"]
+            lock_data = tomlkit.loads(lock_file.read_text())
+            assert lock_data.get("version", 0) == 3
+            for package_data in lock_data.get("package", ()):
+                if package_data.get("name", "") == package_name:
+                    package_data["version"] = str(self.project.latest.version)
+            lock_file.write_text(tomlkit.dumps(lock_data))
+
+        return fn
+
+    @classmethod
+    def search(cls, project: Project, cargo_packages: List[str]) -> List["CargoFile"]:
+        found_packages: List[Tuple[str, Path]] = []
+        queue = [project.root]
+        while queue:
+            path = queue.pop(0)
+            if path.is_dir():
+                queue += list(path.iterdir())
+            elif path.is_file() and path.name == "Cargo.toml":
+                cargo_data = tomlkit.loads(path.read_text())
+                assert "package" in cargo_data
+                package_data = cargo_data.get("package", tomlkit.table())
+                package_name = package_data.get("name", "")
+                if package_name in cargo_packages:
+                    found_packages.append((package_name, path.parent))
+
+        return [
+            CargoFile(
+                project,
+                package_name=package_name,
+                package_dir=package_dir.relative_to(project.root).as_posix(),
+            )
+            for package_name, package_dir in found_packages
+        ]

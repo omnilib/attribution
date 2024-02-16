@@ -152,6 +152,7 @@ package = "fizzbuzz"
             cwd_mock.return_value = td
 
             with self.subTest("pyproject in cwd"):
+                cwd_mock.reset_mock()
                 project = Project.load()
                 cwd_mock.assert_called()
                 self.assertEqual(project.name, "fizzbuzz")
@@ -160,14 +161,15 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
                         "signed_tags": True,
                     },
                 )
-                cwd_mock.reset_mock()
 
             with self.subTest("pyproject in given path"):
+                cwd_mock.reset_mock()
                 project = Project.load(td)
                 cwd_mock.assert_not_called()
                 self.assertEqual(project.name, "fizzbuzz")
@@ -176,6 +178,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
                         "signed_tags": True,
@@ -191,6 +194,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
                         "signed_tags": True,
@@ -206,6 +210,7 @@ package = "fizzbuzz"
                     {
                         "name": "fizzbuzz",
                         "package": "fizzbuzz",
+                        "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": False,
                         "signed_tags": True,
@@ -219,7 +224,12 @@ package = "fizzbuzz"
                 self.assertEqual(project.name, td.name)
                 self.assertEqual(
                     project.config,
-                    {"ignored_authors": [], "version_file": True, "signed_tags": True},
+                    {
+                        "cargo_packages": [],
+                        "ignored_authors": [],
+                        "version_file": True,
+                        "signed_tags": True,
+                    },
                 )
 
             with self.subTest("no pyproject"):
@@ -229,5 +239,10 @@ package = "fizzbuzz"
                 self.assertEqual(project.name, td.name)
                 self.assertEqual(
                     project.config,
-                    {"ignored_authors": [], "version_file": True, "signed_tags": True},
+                    {
+                        "cargo_packages": [],
+                        "ignored_authors": [],
+                        "version_file": True,
+                        "signed_tags": True,
+                    },
                 )
