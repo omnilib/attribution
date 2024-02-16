@@ -104,9 +104,21 @@ class GenerateTest(TestCase):
                 expected = FAKE_CARGO_TOML.replace(
                     'version = "1.0"', 'version = "2.1.3"'
                 )
-                result = generate.CargoFile.search(
-                    project,
-                    cargo_packages=["fluffy"],
-                )[0].write().read_text()
+                result = (
+                    generate.CargoFile.search(
+                        project,
+                        cargo_packages=["fluffy"],
+                    )[0]
+                    .write()
+                    .read_text()
+                )
                 self.assertEqual(expected, result)
 
+                result = cargo_toml.read_text()
+                self.assertEqual(expected, result)
+
+                expected = FAKE_CARGO_LOCK.replace(
+                    'version = "1.0"', 'version = "2.1.3"'
+                )
+                result = cargo_lock.read_text()
+                self.assertEqual(expected, result)

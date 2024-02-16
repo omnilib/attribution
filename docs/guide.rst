@@ -120,6 +120,21 @@ Options available are described as follows:
     is ``true``), and should match the top-level namespace used when importing
     your package at runtime.
 
+.. attribute:: cargo_packages
+    :type: list[str]
+    :value: []
+
+    **Experimental:**
+    List of cargo package names that should have their associated ``Cargo.toml``
+    and ``Cargo.lock`` files updated when tagging a new release version.
+
+    This can be helpful for PyO3 projects to ensure that cargo versions are
+    kept in sync with python project metadata.
+
+    **Note:** this is simple TOML file editing, does not trigger any usage
+    of the ``cargo`` binary, and may not be appropriate for use with every
+    Rust project.
+
 .. attribute:: ignored_authors
     :type: str | list[str]
     :value: []

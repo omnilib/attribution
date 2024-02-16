@@ -23,7 +23,7 @@ class GeneratedFile:
         self.filename = project.root / self.FILENAME.format(project=project, **kwargs)
 
     def __eq__(self, other: Any) -> bool:
-        return (
+        return (  # noqa E721
             type(self) == type(other)
             and self.project == other.project
             and self.kwargs == other.kwargs
@@ -31,7 +31,6 @@ class GeneratedFile:
 
     def __repr__(self) -> str:
         return f"CargoFile({self.project!r}, **{self.kwargs!r})"
-
 
     def generate(self) -> str:
         tags = self.project.tags
