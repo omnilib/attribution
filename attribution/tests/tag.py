@@ -2,10 +2,9 @@
 # Licensed under the MIT license
 
 import subprocess
+from dataclasses import replace
 from unittest import TestCase
 from unittest.mock import call, patch
-
-from attr import evolve
 
 from ..tag import Tag
 from ..types import Version
@@ -81,7 +80,7 @@ class TagTest(TestCase):
 
         proto = Tag("v1.0", Version("1.0"))
 
-        tag = evolve(proto)
+        tag = replace(proto)
         result = tag.message
         sh_mock.assert_called_with("git cat-file tag v1.0")
         self.assertEqual(result, "Tag subject\n\nFoo Bar\n")
@@ -98,13 +97,13 @@ class TagTest(TestCase):
         sh_mock.assert_not_called()
         self.assertEqual(result, "Tag subject\n\nFoo Bar\n")
 
-        tag = evolve(proto)
+        tag = replace(proto)
         result = tag.message
         log_mock.warning.assert_not_called()
         self.assertEqual(result, "Different subject\n")
         self.assertIsNone(tag._signature)
 
-        tag = evolve(proto)
+        tag = replace(proto)
         result = tag.message
         log_mock.warning.assert_called_once()
         self.assertEqual(result, "")
@@ -121,7 +120,7 @@ class TagTest(TestCase):
 
         proto = Tag("v1.0", Version("1.0"))
 
-        tag = evolve(proto)
+        tag = replace(proto)
         result = tag.shortlog
         sh_mock.assert_has_calls(
             [
@@ -141,7 +140,7 @@ class TagTest(TestCase):
         sh_mock.assert_not_called()
         self.assertEqual(result, "shortlog for v0.5")
 
-        tag = evolve(proto)
+        tag = replace(proto)
         sh_mock.reset_mock()
         result = tag.shortlog
         sh_mock.assert_called_with("git describe --tags --abbrev=0 --always v1.0~1")
@@ -149,7 +148,7 @@ class TagTest(TestCase):
         self.assertEqual(result, "")
 
         # first tag in repo
-        tag = evolve(proto)
+        tag = replace(proto)
         sh_mock.reset_mock()
         sh_mock.side_effect = [
             "abcdef123456\n",

@@ -4,9 +4,8 @@
 import logging
 import re
 import subprocess
+from dataclasses import dataclass
 from typing import Any, List, Match, Optional
-
-from attr import dataclass
 
 from .helpers import sh
 from .types import InvalidVersion, Version

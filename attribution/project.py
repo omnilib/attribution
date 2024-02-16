@@ -4,11 +4,11 @@
 import logging
 import re
 import subprocess
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
 import tomlkit
-from attr import dataclass
 
 from .helpers import canonical_namespace, sh
 from .tag import Tag, Tags
@@ -21,9 +21,9 @@ LOG = logging.getLogger(__name__)
 class Project:
     name: str
     package: str
-    config: Dict[str, Any] = {}
+    config: Dict[str, Any] = field(default_factory=dict)
     _shortlog: Optional[str] = None
-    _tags: Tags = []
+    _tags: Tags = field(default_factory=list)
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Project):
