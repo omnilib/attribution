@@ -173,7 +173,9 @@ def tag_release(version: Version, message: Optional[str]) -> None:
             sh(f"git add {path}")
         if cargo_packages := project.config.get("cargo_packages"):
             for cargo_file in CargoFile.search(project, cargo_packages):
-                cargo_file.write()
+                path = cargo_file.write()
+                sh(f"git add {path}")
+                sh(f"git add {path.with_suffix('.lock')}")
 
         # update commit and tag
         sh("git commit --amend --no-edit")
