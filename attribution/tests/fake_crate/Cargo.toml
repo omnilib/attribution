@@ -1,0 +1,10 @@
+[package]
+name = "fake_crate"
+version = "1.7.0"
+edition = "2021"
+
+[lib]
+name = "fake_crate"
+
+[dependencies]
+base64 = "0.21.7"
