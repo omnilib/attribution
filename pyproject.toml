@@ -39,7 +39,7 @@ dev = [
     "pessimist==0.9.3",
     "rich==13.7.0",
     "ufmt==2.5.1",
-    "usort==1.0.7",
+    "usort==1.0.8.post1",
     "wheel==0.42.0",
 ]
 docs = [
