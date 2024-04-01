@@ -40,7 +40,7 @@ dev = [
     "rich==13.7.1",
     "ufmt==2.5.1",
     "usort==1.0.8.post1",
-    "wheel==0.42.0",
+    "wheel==0.43.0",
 ]
 docs = [
     "sphinx==7.2.6",
