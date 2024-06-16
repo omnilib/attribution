@@ -176,7 +176,7 @@ class NpmFile(GeneratedFile):
     def write(self) -> Path:
         fn = super().write()
         assert fn.name == "package.json"
-        lock_file = fn.with_stem("package-lock")
+        lock_file = fn.with_name("package-lock.json")
         if lock_file.is_file():
             package_name = self.kwargs["package_name"]
             package_version = str(self.project.latest.version)

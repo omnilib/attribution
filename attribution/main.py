@@ -180,7 +180,7 @@ def tag_release(version: Version, message: Optional[str]) -> None:
             for npm_file in NpmFile.search(project, npm_packages):
                 path = npm_file.write()
                 sh(f"git add {path}")
-                sh(f"git add {path.with_stem('package-lock')}")
+                sh(f"git add {path.with_name('package-lock.json')}")
 
         # update commit and tag
         sh("git commit --amend --no-edit")
