@@ -10,7 +10,7 @@ import click
 import tomlkit
 
 from attribution import __version__
-from .generate import CargoFile, Changelog, VersionFile
+from .generate import CargoFile, Changelog, NpmFile, VersionFile
 from .helpers import sh
 from .project import Project
 from .tag import Tag
@@ -176,6 +176,11 @@ def tag_release(version: Version, message: Optional[str]) -> None:
                 path = cargo_file.write()
                 sh(f"git add {path}")
                 sh(f"git add {path.with_suffix('.lock')}")
+        if npm_packages := project.config.get("npm_packages"):
+            for npm_file in NpmFile.search(project, npm_packages):
+                path = npm_file.write()
+                sh(f"git add {path}")
+                sh(f"git add {path.with_name('package-lock.json')}")
 
         # update commit and tag
         sh("git commit --amend --no-edit")

@@ -1,6 +1,7 @@
 # Copyright 2022 Amethyst Reese
 # Licensed under the MIT license
 
+import json
 import textwrap
 from pathlib import Path
 from typing import Any, List, Tuple
@@ -150,6 +151,62 @@ class CargoFile(GeneratedFile):
 
         return [
             CargoFile(
+                project,
+                package_name=package_name,
+                package_dir=package_dir.relative_to(project.root).as_posix(),
+            )
+            for package_name, package_dir in found_packages
+        ]
+
+
+class NpmFile(GeneratedFile):
+    EXPECTS = ("package_name", "package_dir")
+    FILENAME = "{package_dir}/package.json"
+
+    def generate(self) -> str:
+        assert self.filename.is_file()
+        package_name = self.kwargs["package_name"]
+
+        data = json.loads(self.filename.read_text())
+        assert package_name == data.get("name", None)
+        assert "version" in data
+        data["version"] = str(self.project.latest.version)
+        return json.dumps(data, indent=4) + "\n"
+
+    def write(self) -> Path:
+        fn = super().write()
+        assert fn.name == "package.json"
+        lock_file = fn.with_name("package-lock.json")
+        if lock_file.is_file():
+            package_name = self.kwargs["package_name"]
+            package_version = str(self.project.latest.version)
+            lock_data = json.loads(lock_file.read_text())
+            assert lock_data.get("lockfileVersion", 0) == 2
+            if lock_data.get("name", "") == package_name:
+                lock_data["version"] = package_version
+            for dep_name, dep_data in list(lock_data.get("packages", {}).items()):
+                if dep_name == package_name or dep_data.get("name", "") == package_name:
+                    lock_data["packages"][dep_name]["version"] = package_version
+            lock_file.write_text(json.dumps(lock_data, indent=4) + "\n")
+
+        return fn
+
+    @classmethod
+    def search(cls, project: Project, npm_packages: List[str]) -> List["NpmFile"]:
+        found_packages: List[Tuple[str, Path]] = []
+        queue = [project.root]
+        while queue:
+            path = queue.pop(0)
+            if path.is_dir() and path.name != "node_modules":
+                queue += list(path.iterdir())
+            elif path.is_file() and path.name == "package.json":
+                package_data = json.loads(path.read_text())
+                package_name = package_data.get("name", "")
+                if package_name in npm_packages:
+                    found_packages.append((package_name, path.parent))
+
+        return [
+            NpmFile(
                 project,
                 package_name=package_name,
                 package_dir=package_dir.relative_to(project.root).as_posix(),
