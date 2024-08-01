@@ -43,7 +43,7 @@ dev = [
     "wheel==0.43.0",
 ]
 docs = [
-    "sphinx==7.3.7",
+    "sphinx==8.0.2",
     "sphinx-mdinclude==0.6.1",
 ]
 
