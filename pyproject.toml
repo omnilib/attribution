@@ -67,6 +67,7 @@ ignored_authors = ["dependabot[bot]", "pyup.io bot"]
 version_file = true
 signed_tags = true
 cargo_packages = ["fake_crate"]
+dynamic_version = true
 
 [tool.coverage.run]
 branch = true

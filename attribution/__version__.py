@@ -5,3 +5,28 @@ Do not edit manually. Get more info at https://attribution.omnilib.dev
 """
 
 __version__ = "1.8.0"
+
+try:
+    import re
+    import subprocess
+    from pathlib import Path
+
+    version_suffix = "+dev"
+    path = Path(__file__).resolve().parent
+    while path != path.parent:
+        if (path / ".git").is_dir():
+            proc = subprocess.run(
+                ("git", "describe"), text=True, capture_output=True, check=True
+            )
+            if match := re.search(r"-(\d+)-(g[a-f0-9]+)$", proc.stdout):
+                count, ref = match.groups()
+                version_suffix = f"+dev{count}-{ref}"
+            break
+
+        path = path.parent
+
+except Exception as e:
+    print(f"version suffix failed: {e}")
+
+finally:
+    __version__ += version_suffix

@@ -171,6 +171,22 @@ Options available are described as follows:
     to not have a managed ``__version__.py`` file, this value should be set to
     ``false``.
 
+.. attribute:: dynamic_version
+    :type: bool
+    :value: False
+
+    Enables generating a dynamic ``__version__.py`` that generates version
+    suffixes based on the local repository's revision relative to the last
+    release.  When a release is tagged, a static version file is committed,
+    without the dynamic suffix logic, before tagging the version bump, and
+    then the dynamic version file is reinstated after the release is tagged.
+
+    If the project's git revision can be queried, then the dynamic version
+    string will look like ``1.8.0+dev6-g3c61fc2``. Otherwise, the version
+    string will fall back to the generic form ``1.8.0+dev``.
+
+    Requires enabling :attr:`version_file`.
+
 
 Alternative Packaging
 ^^^^^^^^^^^^^^^^^^^^^
