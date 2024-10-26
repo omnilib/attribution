@@ -1,19 +1,30 @@
 PKG:=attribution
 EXTRAS:=dev,docs
 
-venv:
-	python -m venv .venv
-	source .venv/bin/activate && make install
-	echo 'run `source .venv/bin/activate` to use virtualenv'
+ifeq ($(OS),Windows_NT)
+    ACTIVATE:=.venv/Scripts/activate
+else
+    ACTIVATE:=.venv/bin/activate
+endif
 
-build:
-	python -m flit build
+UV:=$(shell uv --version)
+ifdef UV
+	VENV:=uv venv
+	PIP:=uv pip
+else
+	VENV:=python -m venv
+	PIP:=python -m pip
+endif
+
+.venv:
+	$(VENV) .venv
+
+venv: .venv
+	source $(ACTIVATE) && make install
+	echo 'run `source $(ACTIVATE)` to use virtualenv'
 
 install:
-	python -m pip install -Ue .[$(EXTRAS)]
-
-release: lint test clean
-	python -m flit publish
+	$(PIP) install -Ue .[$(EXTRAS)]
 
 format:
 	python -m ufmt format $(PKG)
@@ -26,9 +37,6 @@ test:
 	python -m coverage run -m $(PKG).tests
 	python -m coverage report
 	python -m mypy $(PKG)
-
-deps:
-	python -m pessimist --requirements= -c "python -m attribution.tests" .
 
 .PHONY: html
 html:
