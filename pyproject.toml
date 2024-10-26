@@ -32,7 +32,7 @@ dependencies = [
 dev = [
     "black==24.4.2",
     "build>=1",
-    "coverage==7.5.3",
+    "coverage==7.6.4",
     "flake8==7.1.1",
     "flake8-bugbear==24.8.19",
     "flit==3.9.0",
