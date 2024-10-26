@@ -10,7 +10,7 @@ import click
 import tomlkit
 
 from attribution import __version__
-from .generate import CargoFile, Changelog, NpmFile, VersionFile
+from .generate import CargoFile, Changelog, DynamicVersionFile, NpmFile, VersionFile
 from .helpers import sh
 from .project import Project
 from .tag import Tag
@@ -37,6 +37,12 @@ def init() -> None:
     version_file = click.confirm(
         "Use __version__.py file", default=project.config["version_file"]
     )
+    dynamic_version = False
+    if version_file:
+        dynamic_version = click.confirm(
+            "Use dynamic version suffix (eg. '1.0+git4-gabc123')",
+            default=project.config["dynamic_version"],
+        )
     signed_tags = click.confirm(
         "Use GPG signed tags", default=project.config["signed_tags"]
     )
@@ -66,13 +72,17 @@ def init() -> None:
     table["package"] = package
     table["signed_tags"] = signed_tags
     table["version_file"] = version_file
+    table["dynamic_version"] = dynamic_version
 
     project.pyproject_path().write_text(tomlkit.dumps(pyproject))
 
     # pick up any changes
     project = Project.load()
     if version_file:
-        VersionFile(project).write()
+        if dynamic_version:
+            DynamicVersionFile(project).write()
+        else:
+            VersionFile(project).write()
 
 
 @main.command("debug")
@@ -185,6 +195,11 @@ def tag_release(version: Version, message: Optional[str]) -> None:
         # update commit and tag
         sh("git commit --amend --no-edit")
         tag.update(message=message, signed=project.config["signed_tags"])
+
+        if project.config.get("dynamic_version"):
+            path = DynamicVersionFile(project).write()
+            sh(f"git add {path}")
+            sh("git commit -m 'Dynamic version file'")
 
     except Exception:
         mfile = Path(f".attribution-{version}.txt").resolve()

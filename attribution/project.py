@@ -102,6 +102,7 @@ class Project:
             "ignored_authors": [],
             "version_file": True,
             "signed_tags": True,
+            "dynamic_version": False,
         }
 
         if cls.pyproject_path(path).is_file():

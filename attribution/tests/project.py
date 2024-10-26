@@ -164,6 +164,7 @@ package = "fizzbuzz"
                         "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
+                        "dynamic_version": False,
                         "signed_tags": True,
                     },
                 )
@@ -181,6 +182,7 @@ package = "fizzbuzz"
                         "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
+                        "dynamic_version": False,
                         "signed_tags": True,
                     },
                 )
@@ -197,6 +199,7 @@ package = "fizzbuzz"
                         "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
+                        "dynamic_version": False,
                         "signed_tags": True,
                     },
                 )
@@ -213,6 +216,7 @@ package = "fizzbuzz"
                         "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": False,
+                        "dynamic_version": False,
                         "signed_tags": True,
                     },
                 )
@@ -228,6 +232,7 @@ package = "fizzbuzz"
                         "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
+                        "dynamic_version": False,
                         "signed_tags": True,
                     },
                 )
@@ -243,6 +248,7 @@ package = "fizzbuzz"
                         "cargo_packages": [],
                         "ignored_authors": [],
                         "version_file": True,
+                        "dynamic_version": False,
                         "signed_tags": True,
                     },
                 )
