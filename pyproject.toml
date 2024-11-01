@@ -37,7 +37,7 @@ dev = [
     "flake8-bugbear==24.8.19",
     "flit==3.9.0",
     "mypy==1.13.0",
-    "rich==13.7.1",
+    "rich==13.9.3",
     "ufmt==2.8.0",
     "usort==1.0.8.post1",
     "wheel==0.43.0",
