@@ -125,7 +125,7 @@ class CargoFile(GeneratedFile):
         if lock_file.is_file():
             package_name = self.kwargs["package_name"]
             lock_data = tomlkit.loads(lock_file.read_text())
-            assert lock_data.get("version", 0) == 3
+            assert 3 <= lock_data.get("version", 0) <= 4
             for package_data in lock_data.get("package", ()):
                 if package_data.get("name", "") == package_name:
                     package_data["version"] = str(self.project.latest.version)
