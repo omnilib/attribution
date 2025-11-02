@@ -4,7 +4,10 @@
 import logging
 import re
 import subprocess
+from collections import Counter
 from dataclasses import dataclass
+from functools import cache
+from io import StringIO
 from typing import Any, List, Match, Optional
 
 from .helpers import sh
@@ -68,27 +71,32 @@ class Tag:
         return self._message
 
     @property
+    def rev_spec(self) -> str:
+        """Return a git rev range in the form of <base>...<head>"""
+        base = sh(f"git describe --tags --abbrev=0 --always {self.name}~1").strip()
+
+        # If there is no preceding tag, the describe command above will just return
+        # the rev hash of the commit preceding the tag, resulting in a bad shortlog.
+        # We can use `git tag -l <name>` to see if it's a real tag or just a hash.
+        # If it's just a rev, then this is the earliest tag in that tree, and we
+        # should just generate a shortlog without a starting ref.
+        # To save shell commands, we assume that any Version-like name is a tag.
+        try:
+            Version(base)
+        except InvalidVersion:
+            base = sh(f"git tag -l {base}").strip()
+        if base:
+            spec = f"{base}...{self.name}"
+        else:
+            spec = self.name
+
+        return spec
+
+    @property
     def shortlog_cmd(self) -> str:
         """Generate the shortlog command to be run."""
         if self._shortlog_cmd is None:
-            base = sh(f"git describe --tags --abbrev=0 --always {self.name}~1").strip()
-
-            # If there is no preceding tag, the describe command above will just return
-            # the rev hash of the commit preceding the tag, resulting in a bad shortlog.
-            # We can use `git tag -l <name>` to see if it's a real tag or just a hash.
-            # If it's just a rev, then this is the earliest tag in that tree, and we
-            # should just generate a shortlog without a starting ref.
-            # To save shell commands, we assume that any Version-like name is a tag.
-            try:
-                Version(base)
-            except InvalidVersion:
-                base = sh(f"git tag -l {base}").strip()
-            if base:
-                spec = f"{base}...{self.name}"
-            else:
-                spec = self.name
-
-            self._shortlog_cmd = f"git shortlog -s {spec}"
+            self._shortlog_cmd = f"git shortlog -s {self.rev_spec}"
 
         return self._shortlog_cmd
 
@@ -104,6 +112,25 @@ class Tag:
                 self._shortlog = ""
 
         return self._shortlog
+
+    @property
+    def contributors(self) -> set[str]:
+        """Generate a set of all unique contributors by name"""
+
+        log = sh(f"git log --format='Author: %aN <%aE>%n%b' {self.rev_spec}")
+        authors = re.findall(
+            r"^\s*(?:author|co-authored-by):\s*(.+)\s*$",
+            log,
+            re.IGNORECASE | re.MULTILINE,
+        )
+        result = sh("git check-mailmap --stdin", input="\n".join(authors))
+        names = {
+            (name or username).strip()
+            for name, username in re.findall(
+                r"^(.*)\s*<(.+)@.*>\s*$", result, re.MULTILINE
+            )
+        }
+        return names
 
     @classmethod
     def all_tags(cls) -> List["Tag"]:

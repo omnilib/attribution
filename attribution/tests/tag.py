@@ -4,7 +4,7 @@
 import subprocess
 from dataclasses import replace
 from unittest import TestCase
-from unittest.mock import call, patch
+from unittest.mock import ANY, call, patch
 
 from ..tag import Tag
 from ..types import Version
@@ -109,6 +109,17 @@ class TagTest(TestCase):
         self.assertEqual(result, "")
         self.assertIsNone(tag._signature)
 
+    @patch("attribution.tag.sh")
+    def test_rev_spec(self, sh_mock):
+        sh_mock.side_effect = [
+            "v0.5\n",
+        ]
+
+        tag = Tag("v1.0", Version("1.0"))
+        result = tag.rev_spec
+        sh_mock.assert_called_with("git describe --tags --abbrev=0 --always v1.0~1")
+        self.assertEqual(result, "v0.5...v1.0")
+
     @patch("attribution.tag.LOG")
     @patch("attribution.tag.sh")
     def test_shortlog(self, sh_mock, log_mock):
@@ -164,6 +175,28 @@ class TagTest(TestCase):
         )
         log_mock.exception.assert_called_once()
         self.assertEqual(result, "shortlog for v1.0")
+
+    @patch("attribution.tag.sh")
+    def test_contributors(self, sh_mock):
+        sh_mock.side_effect = [
+            "v0.5",
+            "Author: Alice <alice@place>\n\nCo-authored-by: Bob <bob@place>\nAuthor: Cara <cara@place>\n",
+            "Ali <ali@place>\nBob Rob <bob@place>\nCara Mae <cara@place>\n",
+        ]
+
+        tag = Tag("v1.0", Version("1.0"))
+        names = tag.contributors
+        sh_mock.assert_has_calls(
+            [
+                call("git describe --tags --abbrev=0 --always v1.0~1"),
+                call(r"git log --format='Author: %aN <%aE>%n%b' v0.5...v1.0"),
+                call(
+                    r"git check-mailmap --stdin",
+                    input="Alice <alice@place>\nBob <bob@place>\nCara <cara@place>",
+                ),
+            ]
+        )
+        self.assertEqual(names, {"Ali", "Bob Rob", "Cara Mae"})
 
     @patch("attribution.tag.LOG")
     @patch("attribution.tag.sh")

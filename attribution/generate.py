@@ -63,12 +63,13 @@ class Changelog(GeneratedFile):
         {{ "-" * len(tag.name) }}
 
         {{ tag.message if tag.message else "" }}
-        {% if tag.shortlog -%}
-        ```text
-        $ {{ tag.shortlog_cmd }}
-        {{ tag.shortlog }}
-        ```
-        {%- endif %}
+        {%- if tag.contributors %}
+        Contributors
+
+        {% for name in project.filter_contributors(tag.contributors) | sort -%}
+            - {{ name }}
+        {% endfor %}
+        {% endif -%}
 
         {% endfor -%}
 
