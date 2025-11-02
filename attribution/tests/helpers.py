@@ -12,6 +12,11 @@ class HelpersTest(TestCase):
         output = helpers.sh("echo", "foo bar")
         self.assertEqual(output, "foo bar\n")
 
+    def test_cat(self):
+        data = "hello world\n"
+        output = helpers.sh("cat", input=data)
+        self.assertEqual(output, data)
+
     def test_sh_split(self):
         output = helpers.sh("echo foo bar")
         self.assertEqual(output, "foo bar\n")

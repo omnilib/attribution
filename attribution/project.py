@@ -4,6 +4,7 @@
 import logging
 import re
 import subprocess
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
@@ -88,6 +89,14 @@ class Project:
             ]
 
         return log_cmd
+
+    def filter_contributors(self, names: set[str]) -> set[str]:
+        if ignored_authors := self.config.get("ignored_authors", []):
+            ignore_regex = re.compile(
+                "(" + "|".join(re.escape(author) for author in ignored_authors) + ")"
+            )
+            names = {name for name in names if not ignore_regex.match(name)}
+        return names
 
     @classmethod
     def load(cls, path: Optional[Path] = None) -> "Project":
